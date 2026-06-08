@@ -6,6 +6,7 @@ import {
   TrendingUp, 
   Receipt, 
   Bed,
+  FileText,
   ArrowRight
 } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -50,6 +51,14 @@ const tools = [
     icon: Bed,
     color: "text-rose-500",
     bg: "bg-rose-500/10",
+  },
+  {
+    href: "/word-count",
+    title: "Word Count",
+    description: "Count words, characters, sentences, paragraphs and estimate reading time.",
+    icon: FileText,
+    color: "text-indigo-500",
+    bg: "bg-indigo-500/10",
   },
 ];
 

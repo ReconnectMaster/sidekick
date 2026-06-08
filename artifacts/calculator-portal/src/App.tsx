@@ -11,6 +11,7 @@ import Discount from "@/pages/discount";
 import Profit from "@/pages/profit";
 import Vat from "@/pages/vat";
 import Hotel from "@/pages/hotel";
+import WordCount from "@/pages/word-count";
 import NotFound from "@/pages/not-found";
 
 const queryClient = new QueryClient();
@@ -25,6 +26,7 @@ function Router() {
         <Route path="/profit" component={Profit} />
         <Route path="/vat" component={Vat} />
         <Route path="/hotel" component={Hotel} />
+        <Route path="/word-count" component={WordCount} />
         <Route component={NotFound} />
       </Switch>
     </AnimatePresence>

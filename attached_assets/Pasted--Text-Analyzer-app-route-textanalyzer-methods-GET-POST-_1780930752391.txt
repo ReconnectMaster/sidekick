@@ -1,0 +1,76 @@
+# Text Analyzer
+@app.route('/textanalyzer', methods=['GET', 'POST'])
+def textanalyzer():
+    if request.method == 'POST':
+        text = request.form['text']
+
+        # Text analysis
+        word_count = len(text.split())
+        char_count = len(text)
+        char_count_no_spaces = len(text.replace(' ', ''))
+        sentence_count = text.count('.') + text.count('!') + text.count('?')
+        paragraph_count = len([p for p in text.split('\n\n') if p.strip()])
+
+        return f'''
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Text Analyzer - Results</title>
+            <style>
+                body {{ font-family: Arial, sans-serif; max-width: 600px; margin: 50px auto; padding: 20px; background-color: #f5f5f5; }}
+                .container {{ background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }}
+                h1 {{ color: #333; text-align: center; }}
+                .results {{ background: #e8f5e8; padding: 20px; border-radius: 8px; margin: 20px 0; }}
+                .stat {{ margin: 10px 0; padding: 10px; background: #f8f9fa; border-left: 4px solid #007bff; }}
+                .button {{ display: inline-block; background: #007bff; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; margin: 10px 5px; }}
+                .button:hover {{ background: #0056b3; }}
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <h1>Text Analyzer - Results</h1>
+                <div class="results">
+                    <div class="stat"><strong>Word Count:</strong> {word_count}</div>
+                    <div class="stat"><strong>Character Count:</strong> {char_count}</div>
+                    <div class="stat"><strong>Character Count (no spaces):</strong> {char_count_no_spaces}</div>
+                    <div class="stat"><strong>Sentence Count:</strong> {sentence_count}</div>
+                    <div class="stat"><strong>Paragraph Count:</strong> {paragraph_count}</div>
+                </div>
+                <a href="/textanalyzer" class="button">Analyze Again</a>
+                <a href="/" class="button">Back to Menu</a>
+            </div>
+        </body>
+        </html>
+        '''
+
+    return '''
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Text Analyzer</title>
+        <style>
+            body { font-family: Arial, sans-serif; max-width: 600px; margin: 50px auto; padding: 20px; background-color: #f5f5f5; }
+            .container { background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+            h1 { color: #333; text-align: center; }
+            .form-group { margin: 15px 0; }
+            label { display: block; margin-bottom: 5px; font-weight: bold; }
+            textarea { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; height: 200px; }
+            .button { background: #007bff; color: white; padding: 12px 24px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; }
+            .button:hover { background: #0056b3; }
+            .back-button { display: inline-block; background: #6c757d; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; margin-top: 20px; }
+            .back-button:hover { background: #545b62; }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>Text Analyzer</h1>
+            <p>Analyze text statistics and properties</p>
+            <form method="post">
+                <div class="form-group">
+                    <label>Enter your text to analyze:</label>
+                    <textarea name="text" placeholder="Type or paste your text here..." required></textarea>
+                </div>
+                <button type="submit" class="button">Analyze Text</button>
+            </form>
+            <a href="/" class="back-button">Back to Menu</a>
+        </div>

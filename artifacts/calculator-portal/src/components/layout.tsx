@@ -7,6 +7,7 @@ import {
   TrendingUp, 
   Receipt, 
   Bed,
+  FileText,
   Moon,
   Sun,
   Menu
@@ -21,6 +22,7 @@ const navItems = [
   { href: "/profit", label: "Profit & Margin", icon: TrendingUp },
   { href: "/vat", label: "VAT", icon: Receipt },
   { href: "/hotel", label: "Hotel Stay", icon: Bed },
+  { href: "/word-count", label: "Word Count", icon: FileText },
 ];
 
 export function Layout({ children }: { children: React.ReactNode }) {
