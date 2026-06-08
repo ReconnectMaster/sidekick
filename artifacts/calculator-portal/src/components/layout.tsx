@@ -70,19 +70,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row bg-background text-foreground font-sans">
-      {/* Mobile Header */}
-      <header className="md:hidden flex items-center justify-between p-4 border-b border-border bg-card">
-        <div className="flex items-center gap-2 font-bold">
-          <Calculator className="text-primary" />
-          <span>CalcPortal</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <Button variant="ghost" size="icon" onClick={toggleDark}>
-            {isDark ? <Sun size={20} /> : <Moon size={20} />}
-          </Button>
+      {/* Mobile Header — menu + dark mode LEFT · logo CENTER */}
+      <header className="md:hidden flex items-center p-3 border-b border-border bg-card">
+        {/* Left: hamburger + dark mode */}
+        <div className="flex items-center gap-1">
           <Sheet>
             <SheetTrigger asChild>
-              <Button variant="outline" size="icon">
+              <Button variant="ghost" size="icon">
                 <Menu size={20} />
               </Button>
             </SheetTrigger>
@@ -94,6 +88,21 @@ export function Layout({ children }: { children: React.ReactNode }) {
               <NavLinks />
             </SheetContent>
           </Sheet>
+          <Button variant="ghost" size="icon" onClick={toggleDark}>
+            {isDark ? <Sun size={20} /> : <Moon size={20} />}
+          </Button>
+        </div>
+
+        {/* Center: logo */}
+        <div className="flex-1 flex items-center justify-center gap-2 font-bold text-base">
+          <Calculator size={18} className="text-primary" />
+          <span>CalcPortal</span>
+        </div>
+
+        {/* Right: spacer to keep logo visually centered */}
+        <div className="flex items-center gap-1 opacity-0 pointer-events-none">
+          <Button variant="ghost" size="icon"><Menu size={20} /></Button>
+          <Button variant="ghost" size="icon"><Moon size={20} /></Button>
         </div>
       </header>
 
