@@ -31,9 +31,9 @@ interface Item {
 export default function Shopping() {
   const { t, currency, currencySymbol, fmtCurrency } = useTranslation();
   const [items, setItems] = useState<Item[]>([
-    { id: "1", name: "Brand A", price: 4.99, quantity: 500, unit: "g" },
-    { id: "2", name: "Brand B", price: 8.50, quantity: 1,   unit: "kg" },
-    { id: "3", name: "Brand C", price: "",   quantity: "",  unit: "g" },
+    { id: "1", name: "", price: "", quantity: "", unit: "g" },
+    { id: "2", name: "", price: "", quantity: "", unit: "g" },
+    { id: "3", name: "", price: "", quantity: "", unit: "g" },
   ]);
 
   const addItem = () => {
@@ -44,6 +44,11 @@ export default function Shopping() {
   };
 
   const removeItem = (id: string) => setItems(items.filter((item) => item.id !== id));
+
+  const clearItem = (id: string) =>
+    setItems(items.map((item) =>
+      item.id === id ? { ...item, name: "", price: "", quantity: "" } : item
+    ));
 
   const updateItem = (id: string, field: keyof Item, value: any) => {
     setItems(items.map((item) => (item.id === id ? { ...item, [field]: value } : item)));
@@ -256,6 +261,17 @@ export default function Shopping() {
                     <span className="font-mono text-lg text-muted-foreground">—</span>
                   </div>
                 )}
+
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="w-full mt-2 text-muted-foreground hover:text-foreground border border-dashed border-border hover:border-border"
+                  onClick={() => clearItem(item.id)}
+                  disabled={item.name === "" && item.price === "" && item.quantity === ""}
+                  data-testid={`button-clear-${item.id}`}
+                >
+                  {t.shopping.clearItem}
+                </Button>
               </CardContent>
             </Card>
           </motion.div>

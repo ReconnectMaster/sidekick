@@ -43,6 +43,7 @@ const en = {
     save: "save",
     per: "per",
     addItem: "Add Item to Compare",
+    clearItem: "Clear",
     emptyHint: "Fill in a price and quantity to see the unit cost.",
   },
   discount: {
@@ -187,6 +188,7 @@ const th: typeof en = {
     save: "ประหยัด",
     per: "ต่อ",
     addItem: "เพิ่มสินค้าเพื่อเปรียบเทียบ",
+    clearItem: "ล้างข้อมูล",
     emptyHint: "กรอกราคาและปริมาณเพื่อดูราคาต่อหน่วย",
   },
   discount: {
