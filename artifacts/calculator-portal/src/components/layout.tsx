@@ -128,8 +128,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 overflow-auto p-4 md:p-8">
-        <div className="max-w-4xl mx-auto w-full h-full">
+      <main className="flex-1 overflow-auto p-4 md:p-8 flex flex-col">
+        <div className="max-w-4xl mx-auto w-full my-auto">
           {children}
         </div>
       </main>
