@@ -31,6 +31,7 @@ export default function Shopping() {
   const [items, setItems] = useState<Item[]>([
     { id: "1", name: "Brand A", price: 4.99, quantity: 500, unit: "g" },
     { id: "2", name: "Brand B", price: 8.50, quantity: 1,   unit: "kg" },
+    { id: "3", name: "Brand C", price: "",   quantity: "",  unit: "g" },
   ]);
 
   const addItem = () => {
