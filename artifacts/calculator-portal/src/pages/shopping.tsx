@@ -100,6 +100,34 @@ export default function Shopping() {
         </div>
       </div>
 
+      {/* Summary banner */}
+      {(() => {
+        const valid = analyzedItems.filter((i) => i.calcInfo);
+        const best  = valid.find((i) => i.isBest);
+        if (valid.length < 2) return null;
+        const worst = [...valid].sort(
+          (a, b) => (b.calcInfo!.costPerStandard) - (a.calcInfo!.costPerStandard)
+        )[0];
+        const saving = worst.calcInfo!.costPerStandard - best!.calcInfo!.costPerStandard;
+        const savingPct = (saving / worst.calcInfo!.costPerStandard) * 100;
+        return (
+          <div className="rounded-xl bg-blue-500 text-white px-5 py-4 flex flex-col sm:flex-row sm:items-center gap-3 shadow-lg shadow-blue-500/20">
+            <Trophy size={22} className="shrink-0" />
+            <div className="flex-1">
+              <p className="font-bold text-base leading-snug">
+                <span className="opacity-80">Best deal: </span>{best!.name}
+              </p>
+              <p className="text-sm opacity-80 mt-0.5">
+                {savingPct.toFixed(1)}% cheaper per unit than {worst.name} — save {formatCurrency(saving)} per 100{best!.calcInfo!.baseUnit}
+              </p>
+            </div>
+            <div className="font-mono font-bold text-xl sm:text-2xl shrink-0">
+              {best!.calcInfo!.costLabel}
+            </div>
+          </div>
+        );
+      })()}
+
       <div className="space-y-4">
         {analyzedItems.map((item, index) => (
           <motion.div

@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { formatCurrency } from "@/lib/format";
 
-const COMMON_RATES = [5, 10, 15, 20, 23];
+const COMMON_RATES = [7, 10, 15, 20, 23];
 
 export default function Vat() {
   const [netPrice, setNetPrice] = useState<number | "">("");
