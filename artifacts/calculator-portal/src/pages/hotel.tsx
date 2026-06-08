@@ -5,11 +5,10 @@ import { differenceInDays, isWeekend, addDays } from "date-fns";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { formatCurrency } from "@/lib/format";
 import { useTranslation } from "@/i18n";
 
 export default function Hotel() {
-  const { t } = useTranslation();
+  const { t, currencySymbol, fmtCurrency } = useTranslation();
   const [checkIn,     setCheckIn]     = useState<string>("");
   const [checkOut,    setCheckOut]    = useState<string>("");
   const [nightlyRate, setNightlyRate] = useState<number | "">("");
@@ -47,12 +46,9 @@ export default function Hotel() {
       : null;
   const hasResult = totalNights > 0;
 
-  const pluralNight = (n: number) =>
-    `${n} ${n === 1 ? t.hotel.night : t.hotel.nights}`;
-  const pluralWeekday = (n: number) =>
-    `${n} ${n === 1 ? t.hotel.weekday : t.hotel.weekdays}`;
-  const pluralWeekend = (n: number) =>
-    `${n} ${n === 1 ? t.hotel.weekend : t.hotel.weekends}`;
+  const pluralNight   = (n: number) => `${n} ${n === 1 ? t.hotel.night   : t.hotel.nights}`;
+  const pluralWeekday = (n: number) => `${n} ${n === 1 ? t.hotel.weekday : t.hotel.weekdays}`;
+  const pluralWeekend = (n: number) => `${n} ${n === 1 ? t.hotel.weekend : t.hotel.weekends}`;
 
   return (
     <motion.div
@@ -106,7 +102,7 @@ export default function Hotel() {
           <div className="space-y-2">
             <Label htmlFor="nightly-rate" className="text-sm font-semibold">{t.hotel.nightlyRate}</Label>
             <div className="relative">
-              <span className="absolute left-4 top-3.5 text-muted-foreground select-none">$</span>
+              <span className="absolute left-4 top-3.5 text-muted-foreground select-none">{currencySymbol}</span>
               <Input id="nightly-rate" type="number" min="0" step="1" value={nightlyRate}
                 onChange={(e) => setNightlyRate(e.target.value ? parseFloat(e.target.value) : "")}
                 className="pl-9 h-12 text-base" placeholder={t.hotel.nightlyPlaceholder} />
@@ -118,7 +114,7 @@ export default function Hotel() {
               <span className="text-xs font-normal text-muted-foreground">({t.hotel.weekendRateHint})</span>
             </Label>
             <div className="relative">
-              <span className="absolute left-4 top-3.5 text-muted-foreground select-none">$</span>
+              <span className="absolute left-4 top-3.5 text-muted-foreground select-none">{currencySymbol}</span>
               <Input id="weekend-rate" type="number" min="0" step="1" value={weekendRate}
                 onChange={(e) => setWeekendRate(e.target.value ? parseFloat(e.target.value) : "")}
                 className="pl-9 h-12 text-base" placeholder={t.hotel.weekendPlaceholder} />
@@ -137,7 +133,7 @@ export default function Hotel() {
               <span className="text-xs font-normal text-muted-foreground">({t.common.optional})</span>
             </Label>
             <div className="relative">
-              <span className="absolute left-4 top-3.5 text-muted-foreground select-none">$</span>
+              <span className="absolute left-4 top-3.5 text-muted-foreground select-none">{currencySymbol}</span>
               <Input id="budget" type="number" min="0" step="1" value={budget}
                 onChange={(e) => setBudget(e.target.value ? parseFloat(e.target.value) : "")}
                 className="pl-9 h-12 text-base" placeholder={t.hotel.budgetPlaceholder} />
@@ -159,13 +155,13 @@ export default function Hotel() {
           <div className="bg-rose-500 text-white px-6 py-4">
             <p className="text-xs font-bold uppercase tracking-widest opacity-70">{t.hotel.totalCost}</p>
             <p className="text-5xl font-mono font-bold mt-1">
-              {hasResult ? formatCurrency(totalCost) : "—"}
+              {hasResult ? fmtCurrency(totalCost) : "—"}
             </p>
           </div>
           <div className="grid grid-cols-3 divide-x divide-border">
-            <StatBox icon={<Moon size={16} />}        label={t.hotel.totalNights}   value={hasResult ? String(totalNights) : "—"}          highlight />
-            <StatBox icon={<Sun size={16} />}         label={t.hotel.avgNight}      value={hasResult ? formatCurrency(avgPerNight) : "—"}   />
-            <StatBox icon={<CalendarDays size={16} />} label={t.hotel.weekendNights} value={hasResult ? String(weekendNights) : "—"}         />
+            <StatBox icon={<Moon size={16} />}         label={t.hotel.totalNights}   value={hasResult ? String(totalNights) : "—"}         highlight />
+            <StatBox icon={<Sun size={16} />}          label={t.hotel.avgNight}      value={hasResult ? fmtCurrency(avgPerNight) : "—"}    />
+            <StatBox icon={<CalendarDays size={16} />} label={t.hotel.weekendNights} value={hasResult ? String(weekendNights) : "—"}        />
           </div>
         </CardContent>
       </Card>

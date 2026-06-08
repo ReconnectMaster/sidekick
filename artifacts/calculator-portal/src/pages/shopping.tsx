@@ -29,7 +29,7 @@ interface Item {
 }
 
 export default function Shopping() {
-  const { t } = useTranslation();
+  const { t, currency, currencySymbol, fmtCurrency } = useTranslation();
   const [items, setItems] = useState<Item[]>([
     { id: "1", name: "Brand A", price: 4.99, quantity: 500, unit: "g" },
     { id: "2", name: "Brand B", price: 8.50, quantity: 1,   unit: "kg" },
@@ -43,9 +43,7 @@ export default function Shopping() {
     ]);
   };
 
-  const removeItem = (id: string) => {
-    setItems(items.filter((item) => item.id !== id));
-  };
+  const removeItem = (id: string) => setItems(items.filter((item) => item.id !== id));
 
   const updateItem = (id: string, field: keyof Item, value: any) => {
     setItems(items.map((item) => (item.id === id ? { ...item, [field]: value } : item)));
@@ -69,7 +67,7 @@ export default function Shopping() {
         baseQuantity,
         baseUnit: base,
         costPerStandard,
-        costLabel: `${formatCurrency(costPerStandard)} / 100${base}`,
+        costLabel: `${formatCurrency(costPerStandard, currency)} / 100${base}`,
       };
     });
 
@@ -83,7 +81,7 @@ export default function Shopping() {
         isBest: sorted.length > 1 && sorted[0].id === item.id && calcInfo !== undefined,
       };
     });
-  }, [items]);
+  }, [items, currency]);
 
   return (
     <motion.div
@@ -120,7 +118,7 @@ export default function Shopping() {
                 <span className="opacity-80">{t.shopping.bestDeal} </span>{best.name}
               </p>
               <p className="text-sm opacity-80 mt-0.5">
-                {savingPct.toFixed(1)}% {t.shopping.cheaperThan} {worst.name} — {t.shopping.save} {formatCurrency(saving)} {t.shopping.per} 100{best.calcInfo!.baseUnit}
+                {savingPct.toFixed(1)}% {t.shopping.cheaperThan} {worst.name} — {t.shopping.save} {fmtCurrency(saving)} {t.shopping.per} 100{best.calcInfo!.baseUnit}
               </p>
             </div>
             <div className="font-mono font-bold text-xl sm:text-2xl shrink-0">
@@ -190,7 +188,7 @@ export default function Shopping() {
                       {t.shopping.price}
                     </Label>
                     <div className="relative">
-                      <span className="absolute left-3 top-3 text-muted-foreground text-sm select-none">$</span>
+                      <span className="absolute left-3 top-3 text-muted-foreground text-sm select-none">{currencySymbol}</span>
                       <Input
                         id={`price-${item.id}`}
                         type="number"

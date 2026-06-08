@@ -1,5 +1,6 @@
 import { createContext, useContext, useState } from "react";
 import { Lang, Translations, translations } from "./translations";
+import { formatCurrency as _fmt } from "@/lib/format";
 
 interface LanguageContextValue {
   lang: Lang;
@@ -31,8 +32,16 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   );
 }
 
+const CURRENCY: Record<Lang, { code: string; symbol: string }> = {
+  en: { code: "USD", symbol: "$" },
+  th: { code: "THB", symbol: "฿" },
+};
+
 export function useTranslation() {
-  return useContext(LanguageContext);
+  const ctx = useContext(LanguageContext);
+  const cur = CURRENCY[ctx.lang];
+  const fmtCurrency = (amount: number) => _fmt(amount, cur.code);
+  return { ...ctx, currency: cur.code, currencySymbol: cur.symbol, fmtCurrency };
 }
 
 export function LangToggle() {

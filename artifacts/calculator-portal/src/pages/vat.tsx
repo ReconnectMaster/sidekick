@@ -5,13 +5,12 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { formatCurrency } from "@/lib/format";
 import { useTranslation } from "@/i18n";
 
 const COMMON_RATES = [7, 10, 15, 20, 23];
 
 export default function Vat() {
-  const { t } = useTranslation();
+  const { t, currencySymbol, fmtCurrency } = useTranslation();
   const [netPrice, setNetPrice] = useState<number | "">("");
   const [grossPrice, setGrossPrice] = useState<number | "">("");
   const [vatRate, setVatRate] = useState<number | "">(20);
@@ -81,7 +80,7 @@ export default function Vat() {
                   <div className="space-y-2">
                     <Label className="text-xs uppercase tracking-wider font-bold text-muted-foreground">{t.vat.netPriceBefore}</Label>
                     <div className="relative">
-                      <span className="absolute left-4 top-3 text-muted-foreground">$</span>
+                      <span className="absolute left-4 top-3 text-muted-foreground">{currencySymbol}</span>
                       <Input type="number" min="0" step="0.01" value={netPrice}
                         onChange={(e) => setNetPrice(e.target.value ? parseFloat(e.target.value) : "")}
                         className="pl-8 text-lg h-12" placeholder="0.00" />
@@ -94,20 +93,20 @@ export default function Vat() {
                     <div>
                       <div className="text-sm font-medium text-muted-foreground mb-1">{t.vat.grossPriceFinal}</div>
                       <div className="text-4xl font-mono font-bold text-foreground">
-                        {m1Gross !== null ? formatCurrency(m1Gross) : "$0.00"}
+                        {m1Gross !== null ? fmtCurrency(m1Gross) : fmtCurrency(0)}
                       </div>
                     </div>
                     <div className="grid grid-cols-2 gap-4 pt-4 border-t border-border">
                       <div>
                         <div className="text-xs text-muted-foreground mb-1">{t.vat.vatAmount}</div>
                         <div className="font-mono font-semibold text-amber-600 dark:text-amber-400">
-                          +{m1VatAmount !== null ? formatCurrency(m1VatAmount) : "$0.00"}
+                          +{m1VatAmount !== null ? fmtCurrency(m1VatAmount) : fmtCurrency(0)}
                         </div>
                       </div>
                       <div>
                         <div className="text-xs text-muted-foreground mb-1">{t.vat.netBase}</div>
                         <div className="font-mono font-semibold text-muted-foreground">
-                          {netPrice !== "" ? formatCurrency(netPrice) : "$0.00"}
+                          {netPrice !== "" ? fmtCurrency(netPrice) : fmtCurrency(0)}
                         </div>
                       </div>
                     </div>
@@ -126,7 +125,7 @@ export default function Vat() {
                   <div className="space-y-2">
                     <Label className="text-xs uppercase tracking-wider font-bold text-muted-foreground">{t.vat.grossPriceTotal}</Label>
                     <div className="relative">
-                      <span className="absolute left-4 top-3 text-muted-foreground">$</span>
+                      <span className="absolute left-4 top-3 text-muted-foreground">{currencySymbol}</span>
                       <Input type="number" min="0" step="0.01" value={grossPrice}
                         onChange={(e) => setGrossPrice(e.target.value ? parseFloat(e.target.value) : "")}
                         className="pl-8 text-lg h-12" placeholder="0.00" />
@@ -139,20 +138,20 @@ export default function Vat() {
                     <div>
                       <div className="text-sm font-medium text-muted-foreground mb-1">{t.vat.netPriceExcl}</div>
                       <div className="text-4xl font-mono font-bold text-foreground">
-                        {m2Net !== null ? formatCurrency(m2Net) : "$0.00"}
+                        {m2Net !== null ? fmtCurrency(m2Net) : fmtCurrency(0)}
                       </div>
                     </div>
                     <div className="grid grid-cols-2 gap-4 pt-4 border-t border-border">
                       <div>
                         <div className="text-xs text-muted-foreground mb-1">{t.vat.includedVat}</div>
                         <div className="font-mono font-semibold text-amber-600 dark:text-amber-400">
-                          {m2VatAmount !== null ? formatCurrency(m2VatAmount) : "$0.00"}
+                          {m2VatAmount !== null ? fmtCurrency(m2VatAmount) : fmtCurrency(0)}
                         </div>
                       </div>
                       <div>
                         <div className="text-xs text-muted-foreground mb-1">{t.vat.grossTotal}</div>
                         <div className="font-mono font-semibold text-muted-foreground">
-                          {grossPrice !== "" ? formatCurrency(grossPrice) : "$0.00"}
+                          {grossPrice !== "" ? fmtCurrency(grossPrice) : fmtCurrency(0)}
                         </div>
                       </div>
                     </div>

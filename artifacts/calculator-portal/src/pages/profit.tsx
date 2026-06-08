@@ -5,11 +5,11 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { formatCurrency, formatPercent } from "@/lib/format";
+import { formatPercent } from "@/lib/format";
 import { useTranslation } from "@/i18n";
 
 export default function Profit() {
-  const { t } = useTranslation();
+  const { t, currencySymbol, fmtCurrency } = useTranslation();
   const [cost, setCost] = useState<number | "">("");
   const [sellingPrice, setSellingPrice] = useState<number | "">("");
   const [desiredMargin, setDesiredMargin] = useState<number | "">("");
@@ -53,7 +53,7 @@ export default function Profit() {
                   <div className="space-y-2">
                     <Label className="text-xs uppercase tracking-wider font-bold text-muted-foreground">{t.profit.costPrice}</Label>
                     <div className="relative">
-                      <span className="absolute left-4 top-3 text-muted-foreground">$</span>
+                      <span className="absolute left-4 top-3 text-muted-foreground">{currencySymbol}</span>
                       <Input type="number" min="0" step="0.01" value={cost}
                         onChange={(e) => setCost(e.target.value ? parseFloat(e.target.value) : "")}
                         className="pl-8 text-lg h-12" placeholder="0.00" />
@@ -62,7 +62,7 @@ export default function Profit() {
                   <div className="space-y-2">
                     <Label className="text-xs uppercase tracking-wider font-bold text-muted-foreground">{t.profit.sellingPrice}</Label>
                     <div className="relative">
-                      <span className="absolute left-4 top-3 text-muted-foreground">$</span>
+                      <span className="absolute left-4 top-3 text-muted-foreground">{currencySymbol}</span>
                       <Input type="number" min="0" step="0.01" value={sellingPrice}
                         onChange={(e) => setSellingPrice(e.target.value ? parseFloat(e.target.value) : "")}
                         className="pl-8 text-lg h-12" placeholder="0.00" />
@@ -76,7 +76,7 @@ export default function Profit() {
                     <div>
                       <div className="text-sm font-medium text-muted-foreground mb-1">{t.profit.grossProfit}</div>
                       <div className={`text-4xl font-mono font-bold ${m1Profit && m1Profit < 0 ? "text-destructive" : "text-purple-600 dark:text-purple-400"}`}>
-                        {m1Profit !== null ? formatCurrency(m1Profit) : "$0.00"}
+                        {m1Profit !== null ? fmtCurrency(m1Profit) : fmtCurrency(0)}
                       </div>
                     </div>
                     <div className="grid grid-cols-2 gap-4 pt-4 border-t border-border">
@@ -106,7 +106,7 @@ export default function Profit() {
                   <div className="space-y-2">
                     <Label className="text-xs uppercase tracking-wider font-bold text-muted-foreground">{t.profit.costPrice}</Label>
                     <div className="relative">
-                      <span className="absolute left-4 top-3 text-muted-foreground">$</span>
+                      <span className="absolute left-4 top-3 text-muted-foreground">{currencySymbol}</span>
                       <Input type="number" min="0" step="0.01" value={cost}
                         onChange={(e) => setCost(e.target.value ? parseFloat(e.target.value) : "")}
                         className="pl-8 text-lg h-12" placeholder="0.00" />
@@ -130,20 +130,20 @@ export default function Profit() {
                     <div>
                       <div className="text-sm font-medium text-muted-foreground mb-1">{t.profit.requiredSellingPrice}</div>
                       <div className="text-4xl font-mono font-bold text-foreground">
-                        {m2SellingPrice !== null ? formatCurrency(m2SellingPrice) : "$0.00"}
+                        {m2SellingPrice !== null ? fmtCurrency(m2SellingPrice) : fmtCurrency(0)}
                       </div>
                     </div>
                     <div className="grid grid-cols-2 gap-4 pt-4 border-t border-border">
                       <div>
                         <div className="text-xs text-muted-foreground mb-1">{t.profit.profitAmount}</div>
                         <div className="font-mono font-semibold text-purple-600 dark:text-purple-400">
-                          {m2Profit !== null ? formatCurrency(m2Profit) : "$0.00"}
+                          {m2Profit !== null ? fmtCurrency(m2Profit) : fmtCurrency(0)}
                         </div>
                       </div>
                       <div>
                         <div className="text-xs text-muted-foreground mb-1">{t.profit.costBase}</div>
                         <div className="font-mono font-semibold">
-                          {cost !== "" ? formatCurrency(cost) : "$0.00"}
+                          {cost !== "" ? fmtCurrency(cost) : fmtCurrency(0)}
                         </div>
                       </div>
                     </div>
