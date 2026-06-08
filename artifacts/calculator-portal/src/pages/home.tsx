@@ -1,70 +1,31 @@
 import { motion } from "framer-motion";
 import { Link } from "wouter";
-import { 
-  ShoppingCart, 
-  Percent, 
-  TrendingUp, 
-  Receipt, 
+import {
+  ShoppingCart,
+  Percent,
+  TrendingUp,
+  Receipt,
   Bed,
   FileText,
-  ArrowRight
+  ArrowRight,
 } from "lucide-react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-
-const tools = [
-  {
-    href: "/shopping",
-    title: "Shopping",
-    description: "Compare price-per-unit across products to find the best deal.",
-    icon: ShoppingCart,
-    color: "text-blue-500",
-    bg: "bg-blue-500/10",
-  },
-  {
-    href: "/discount",
-    title: "Discount",
-    description: "Find discounted or original prices and view your exact savings.",
-    icon: Percent,
-    color: "text-green-500",
-    bg: "bg-green-500/10",
-  },
-  {
-    href: "/profit",
-    title: "Profit & Margin",
-    description: "Calculate profit margins, markups, and required selling prices.",
-    icon: TrendingUp,
-    color: "text-purple-500",
-    bg: "bg-purple-500/10",
-  },
-  {
-    href: "/vat",
-    title: "VAT",
-    description: "Instantly add or extract VAT from any amount.",
-    icon: Receipt,
-    color: "text-amber-500",
-    bg: "bg-amber-500/10",
-  },
-  {
-    href: "/hotel",
-    title: "Hotel Stay",
-    description: "Calculate total nights, split by weekend/weekday, and total cost.",
-    icon: Bed,
-    color: "text-rose-500",
-    bg: "bg-rose-500/10",
-  },
-  {
-    href: "/word-count",
-    title: "Word Count",
-    description: "Count words, characters, sentences, paragraphs and estimate reading time.",
-    icon: FileText,
-    color: "text-indigo-500",
-    bg: "bg-indigo-500/10",
-  },
-];
+import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { useTranslation } from "@/i18n";
 
 export default function Home() {
+  const { t } = useTranslation();
+
+  const tools = [
+    { href: "/shopping",   key: "shopping"  as const, icon: ShoppingCart, color: "text-blue-500",   bg: "bg-blue-500/10"   },
+    { href: "/discount",   key: "discount"  as const, icon: Percent,      color: "text-green-500",  bg: "bg-green-500/10"  },
+    { href: "/profit",     key: "profit"    as const, icon: TrendingUp,   color: "text-purple-500", bg: "bg-purple-500/10" },
+    { href: "/vat",        key: "vat"       as const, icon: Receipt,      color: "text-amber-500",  bg: "bg-amber-500/10"  },
+    { href: "/hotel",      key: "hotel"     as const, icon: Bed,          color: "text-rose-500",   bg: "bg-rose-500/10"   },
+    { href: "/word-count", key: "wordCount" as const, icon: FileText,     color: "text-indigo-500", bg: "bg-indigo-500/10" },
+  ];
+
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -10 }}
@@ -72,16 +33,15 @@ export default function Home() {
     >
       <div>
         <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-foreground mb-3">
-          Toolkit
+          {t.home.title}
         </h1>
-        <p className="text-xl text-muted-foreground">
-          Precise, instant calculators for everyday utility.
-        </p>
+        <p className="text-xl text-muted-foreground">{t.home.subtitle}</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {tools.map((tool, i) => {
           const Icon = tool.icon;
+          const entry = t.home.tools[tool.key];
           return (
             <motion.div
               key={tool.href}
@@ -96,11 +56,11 @@ export default function Home() {
                       <Icon size={24} />
                     </div>
                     <CardTitle className="flex items-center justify-between">
-                      {tool.title}
+                      {entry.title}
                       <ArrowRight size={18} className="opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-primary" />
                     </CardTitle>
                     <CardDescription className="text-sm leading-relaxed">
-                      {tool.description}
+                      {entry.desc}
                     </CardDescription>
                   </CardHeader>
                 </Card>

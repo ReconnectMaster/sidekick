@@ -4,6 +4,7 @@ import { AnimatePresence } from "framer-motion";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Layout } from "@/components/layout";
+import { LanguageProvider } from "@/i18n";
 
 import Home from "@/pages/home";
 import Shopping from "@/pages/shopping";
@@ -35,16 +36,18 @@ function Router() {
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
-          <Layout>
-            <Router />
-          </Layout>
-        </WouterRouter>
-        <Toaster />
-      </TooltipProvider>
-    </QueryClientProvider>
+    <LanguageProvider>
+      <QueryClientProvider client={queryClient}>
+        <TooltipProvider>
+          <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
+            <Layout>
+              <Router />
+            </Layout>
+          </WouterRouter>
+          <Toaster />
+        </TooltipProvider>
+      </QueryClientProvider>
+    </LanguageProvider>
   );
 }
 

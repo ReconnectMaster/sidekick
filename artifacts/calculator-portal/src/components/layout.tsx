@@ -1,32 +1,24 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
-import { 
-  Calculator, 
-  ShoppingCart, 
-  Percent, 
-  TrendingUp, 
-  Receipt, 
+import {
+  Calculator,
+  ShoppingCart,
+  Percent,
+  TrendingUp,
+  Receipt,
   Bed,
   FileText,
   Moon,
   Sun,
-  Menu
+  Menu,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-
-const navItems = [
-  { href: "/", label: "Home", icon: Calculator },
-  { href: "/shopping", label: "Shopping", icon: ShoppingCart },
-  { href: "/discount", label: "Discount", icon: Percent },
-  { href: "/profit", label: "Profit & Margin", icon: TrendingUp },
-  { href: "/vat", label: "VAT", icon: Receipt },
-  { href: "/hotel", label: "Hotel Stay", icon: Bed },
-  { href: "/word-count", label: "Word Count", icon: FileText },
-];
+import { useTranslation, LangToggle } from "@/i18n";
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const [location] = useLocation();
+  const { t } = useTranslation();
   const [isDark, setIsDark] = useState(() => {
     if (typeof window !== "undefined") {
       return document.documentElement.classList.contains("dark");
@@ -44,6 +36,16 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
   const toggleDark = () => setIsDark(!isDark);
 
+  const navItems = [
+    { href: "/",           label: t.nav.home,      icon: Calculator  },
+    { href: "/shopping",   label: t.nav.shopping,   icon: ShoppingCart },
+    { href: "/discount",   label: t.nav.discount,   icon: Percent     },
+    { href: "/profit",     label: t.nav.profit,     icon: TrendingUp  },
+    { href: "/vat",        label: t.nav.vat,        icon: Receipt     },
+    { href: "/hotel",      label: t.nav.hotel,      icon: Bed         },
+    { href: "/word-count", label: t.nav.wordCount,  icon: FileText    },
+  ];
+
   const NavLinks = ({ onClick }: { onClick?: () => void }) => (
     <nav className="flex flex-col gap-2">
       {navItems.map((item) => {
@@ -54,8 +56,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
             <div
               onClick={onClick}
               className={`flex items-center gap-3 px-3 py-2 rounded-md transition-colors cursor-pointer ${
-                isActive 
-                  ? "bg-primary text-primary-foreground font-medium" 
+                isActive
+                  ? "bg-primary text-primary-foreground font-medium"
                   : "hover:bg-muted text-muted-foreground hover:text-foreground"
               }`}
             >
@@ -70,7 +72,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row bg-background text-foreground font-sans">
-      {/* Mobile Header — menu + dark mode LEFT · logo CENTER */}
+      {/* Mobile Header — menu + dark mode LEFT · logo CENTER · lang toggle RIGHT */}
       <header className="md:hidden flex items-center p-3 border-b border-border bg-card">
         {/* Left: hamburger + dark mode */}
         <div className="flex items-center gap-1">
@@ -99,10 +101,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
           <span>CalcPortal</span>
         </div>
 
-        {/* Right: spacer to keep logo visually centered */}
-        <div className="flex items-center gap-1 opacity-0 pointer-events-none">
-          <Button variant="ghost" size="icon"><Menu size={20} /></Button>
-          <Button variant="ghost" size="icon"><Moon size={20} /></Button>
+        {/* Right: language toggle */}
+        <div className="flex items-center">
+          <LangToggle />
         </div>
       </header>
 
@@ -115,10 +116,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <div className="flex-1">
           <NavLinks />
         </div>
-        <div className="pt-4 border-t border-border mt-auto">
+        <div className="pt-4 border-t border-border mt-auto space-y-2">
+          <div className="px-1">
+            <LangToggle />
+          </div>
           <Button variant="ghost" className="w-full justify-start gap-2" onClick={toggleDark}>
             {isDark ? <Sun size={18} /> : <Moon size={18} />}
-            <span>{isDark ? "Light Mode" : "Dark Mode"}</span>
+            <span>{isDark ? t.common.lightMode : t.common.darkMode}</span>
           </Button>
         </div>
       </aside>

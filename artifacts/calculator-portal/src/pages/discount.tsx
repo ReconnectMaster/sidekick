@@ -5,31 +5,27 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { formatCurrency, formatPercent } from "@/lib/format";
+import { formatCurrency } from "@/lib/format";
+import { useTranslation } from "@/i18n";
 
 export default function Discount() {
+  const { t } = useTranslation();
   const [originalPrice, setOriginalPrice] = useState<number | "">("");
   const [discountPercent, setDiscountPercent] = useState<number | "">("");
   const [finalPrice, setFinalPrice] = useState<number | "">("");
 
-  // Derived values for Mode 1: Given Original & Discount
-  const m1Savings = typeof originalPrice === "number" && typeof discountPercent === "number" 
-    ? originalPrice * (discountPercent / 100) 
-    : null;
-  const m1Final = typeof originalPrice === "number" && typeof m1Savings === "number" 
-    ? originalPrice - m1Savings 
-    : null;
+  const m1Savings = typeof originalPrice === "number" && typeof discountPercent === "number"
+    ? originalPrice * (discountPercent / 100) : null;
+  const m1Final = typeof originalPrice === "number" && typeof m1Savings === "number"
+    ? originalPrice - m1Savings : null;
 
-  // Derived values for Mode 2: Given Final & Discount
   const m2Original = typeof finalPrice === "number" && typeof discountPercent === "number" && discountPercent < 100
-    ? finalPrice / (1 - (discountPercent / 100))
-    : null;
+    ? finalPrice / (1 - discountPercent / 100) : null;
   const m2Savings = typeof m2Original === "number" && typeof finalPrice === "number"
-    ? m2Original - finalPrice
-    : null;
+    ? m2Original - finalPrice : null;
 
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -10 }}
@@ -40,52 +36,37 @@ export default function Discount() {
           <Percent size={24} />
         </div>
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Discount</h1>
-          <p className="text-muted-foreground">Find sale prices or calculate original costs.</p>
+          <h1 className="text-3xl font-bold tracking-tight">{t.discount.title}</h1>
+          <p className="text-muted-foreground">{t.discount.subtitle}</p>
         </div>
       </div>
 
       <Tabs defaultValue="find-final" className="w-full">
         <TabsList className="grid w-full grid-cols-2 mb-6">
-          <TabsTrigger value="find-final">Find Sale Price</TabsTrigger>
-          <TabsTrigger value="find-original">Find Original Price</TabsTrigger>
+          <TabsTrigger value="find-final">{t.discount.findSalePrice}</TabsTrigger>
+          <TabsTrigger value="find-original">{t.discount.findOriginalPrice}</TabsTrigger>
         </TabsList>
-        
-        {/* MODE 1 */}
+
         <TabsContent value="find-final">
           <Card className="border-t-4 border-t-green-500 shadow-sm">
             <CardContent className="p-6">
               <div className="grid md:grid-cols-2 gap-8">
                 <div className="space-y-6">
                   <div className="space-y-2">
-                    <Label className="text-xs uppercase tracking-wider font-bold text-muted-foreground">Original Price</Label>
+                    <Label className="text-xs uppercase tracking-wider font-bold text-muted-foreground">{t.discount.originalPrice}</Label>
                     <div className="relative">
                       <span className="absolute left-4 top-3 text-muted-foreground">$</span>
-                      <Input
-                        type="number"
-                        min="0"
-                        step="0.01"
-                        value={originalPrice}
+                      <Input type="number" min="0" step="0.01" value={originalPrice}
                         onChange={(e) => setOriginalPrice(e.target.value ? parseFloat(e.target.value) : "")}
-                        className="pl-8 text-lg h-12"
-                        placeholder="0.00"
-                      />
+                        className="pl-8 text-lg h-12" placeholder="0.00" />
                     </div>
                   </div>
-                  
                   <div className="space-y-2">
-                    <Label className="text-xs uppercase tracking-wider font-bold text-muted-foreground">Discount Percentage</Label>
+                    <Label className="text-xs uppercase tracking-wider font-bold text-muted-foreground">{t.discount.discountPercentage}</Label>
                     <div className="relative">
-                      <Input
-                        type="number"
-                        min="0"
-                        max="100"
-                        step="1"
-                        value={discountPercent}
+                      <Input type="number" min="0" max="100" step="1" value={discountPercent}
                         onChange={(e) => setDiscountPercent(e.target.value ? parseFloat(e.target.value) : "")}
-                        className="pr-8 text-lg h-12"
-                        placeholder="0"
-                      />
+                        className="pr-8 text-lg h-12" placeholder="0" />
                       <span className="absolute right-4 top-3 text-muted-foreground">%</span>
                     </div>
                   </div>
@@ -95,21 +76,20 @@ export default function Discount() {
                   <Tag className="absolute -right-4 -bottom-4 text-green-500/10" size={120} />
                   <div className="relative z-10 space-y-6">
                     <div>
-                      <div className="text-sm font-medium text-muted-foreground mb-1">Final Sale Price</div>
+                      <div className="text-sm font-medium text-muted-foreground mb-1">{t.discount.finalSalePrice}</div>
                       <div className="text-4xl font-mono font-bold text-green-600 dark:text-green-400">
                         {m1Final !== null ? formatCurrency(m1Final) : "$0.00"}
                       </div>
                     </div>
-                    
                     <div className="grid grid-cols-2 gap-4 pt-4 border-t border-border">
                       <div>
-                        <div className="text-xs text-muted-foreground mb-1">You Save</div>
+                        <div className="text-xs text-muted-foreground mb-1">{t.discount.youSave}</div>
                         <div className="font-mono font-semibold">
                           {m1Savings !== null ? formatCurrency(m1Savings) : "$0.00"}
                         </div>
                       </div>
                       <div>
-                        <div className="text-xs text-muted-foreground mb-1">Original</div>
+                        <div className="text-xs text-muted-foreground mb-1">{t.discount.original}</div>
                         <div className="font-mono font-semibold text-muted-foreground line-through decoration-destructive/50">
                           {originalPrice !== "" ? formatCurrency(originalPrice) : "$0.00"}
                         </div>
@@ -122,41 +102,26 @@ export default function Discount() {
           </Card>
         </TabsContent>
 
-        {/* MODE 2 */}
         <TabsContent value="find-original">
           <Card className="border-t-4 border-t-green-500 shadow-sm">
             <CardContent className="p-6">
               <div className="grid md:grid-cols-2 gap-8">
                 <div className="space-y-6">
                   <div className="space-y-2">
-                    <Label className="text-xs uppercase tracking-wider font-bold text-muted-foreground">Final Sale Price</Label>
+                    <Label className="text-xs uppercase tracking-wider font-bold text-muted-foreground">{t.discount.finalSalePrice}</Label>
                     <div className="relative">
                       <span className="absolute left-4 top-3 text-muted-foreground">$</span>
-                      <Input
-                        type="number"
-                        min="0"
-                        step="0.01"
-                        value={finalPrice}
+                      <Input type="number" min="0" step="0.01" value={finalPrice}
                         onChange={(e) => setFinalPrice(e.target.value ? parseFloat(e.target.value) : "")}
-                        className="pl-8 text-lg h-12"
-                        placeholder="0.00"
-                      />
+                        className="pl-8 text-lg h-12" placeholder="0.00" />
                     </div>
                   </div>
-                  
                   <div className="space-y-2">
-                    <Label className="text-xs uppercase tracking-wider font-bold text-muted-foreground">Discount Applied</Label>
+                    <Label className="text-xs uppercase tracking-wider font-bold text-muted-foreground">{t.discount.discountApplied}</Label>
                     <div className="relative">
-                      <Input
-                        type="number"
-                        min="0"
-                        max="99"
-                        step="1"
-                        value={discountPercent}
+                      <Input type="number" min="0" max="99" step="1" value={discountPercent}
                         onChange={(e) => setDiscountPercent(e.target.value ? parseFloat(e.target.value) : "")}
-                        className="pr-8 text-lg h-12"
-                        placeholder="0"
-                      />
+                        className="pr-8 text-lg h-12" placeholder="0" />
                       <span className="absolute right-4 top-3 text-muted-foreground">%</span>
                     </div>
                   </div>
@@ -166,21 +131,20 @@ export default function Discount() {
                   <Tag className="absolute -right-4 -bottom-4 text-green-500/10" size={120} />
                   <div className="relative z-10 space-y-6">
                     <div>
-                      <div className="text-sm font-medium text-muted-foreground mb-1">Original Price Was</div>
+                      <div className="text-sm font-medium text-muted-foreground mb-1">{t.discount.originalPriceWas}</div>
                       <div className="text-4xl font-mono font-bold text-foreground">
                         {m2Original !== null ? formatCurrency(m2Original) : "$0.00"}
                       </div>
                     </div>
-                    
                     <div className="grid grid-cols-2 gap-4 pt-4 border-t border-border">
                       <div>
-                        <div className="text-xs text-muted-foreground mb-1">Total Savings</div>
+                        <div className="text-xs text-muted-foreground mb-1">{t.discount.totalSavings}</div>
                         <div className="font-mono font-semibold text-green-600 dark:text-green-400">
                           {m2Savings !== null ? formatCurrency(m2Savings) : "$0.00"}
                         </div>
                       </div>
                       <div>
-                        <div className="text-xs text-muted-foreground mb-1">Final Price</div>
+                        <div className="text-xs text-muted-foreground mb-1">{t.discount.finalPrice}</div>
                         <div className="font-mono font-semibold">
                           {finalPrice !== "" ? formatCurrency(finalPrice) : "$0.00"}
                         </div>

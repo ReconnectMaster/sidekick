@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { formatCurrency } from "@/lib/format";
+import { useTranslation } from "@/i18n";
 
 type Unit = "g" | "kg" | "ml" | "L" | "oz" | "lb";
 
@@ -28,6 +29,7 @@ interface Item {
 }
 
 export default function Shopping() {
+  const { t } = useTranslation();
   const [items, setItems] = useState<Item[]>([
     { id: "1", name: "Brand A", price: 4.99, quantity: 500, unit: "g" },
     { id: "2", name: "Brand B", price: 8.50, quantity: 1,   unit: "kg" },
@@ -95,8 +97,8 @@ export default function Shopping() {
           <ShoppingCart size={24} />
         </div>
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Shopping</h1>
-          <p className="text-muted-foreground">Compare price-per-unit across products.</p>
+          <h1 className="text-3xl font-bold tracking-tight">{t.shopping.title}</h1>
+          <p className="text-muted-foreground">{t.shopping.subtitle}</p>
         </div>
       </div>
 
@@ -104,25 +106,25 @@ export default function Shopping() {
       {(() => {
         const valid = analyzedItems.filter((i) => i.calcInfo);
         const best  = valid.find((i) => i.isBest);
-        if (valid.length < 2) return null;
+        if (valid.length < 2 || !best) return null;
         const worst = [...valid].sort(
-          (a, b) => (b.calcInfo!.costPerStandard) - (a.calcInfo!.costPerStandard)
+          (a, b) => b.calcInfo!.costPerStandard - a.calcInfo!.costPerStandard
         )[0];
-        const saving = worst.calcInfo!.costPerStandard - best!.calcInfo!.costPerStandard;
+        const saving    = worst.calcInfo!.costPerStandard - best.calcInfo!.costPerStandard;
         const savingPct = (saving / worst.calcInfo!.costPerStandard) * 100;
         return (
           <div className="rounded-xl bg-blue-500 text-white px-5 py-4 flex flex-col sm:flex-row sm:items-center gap-3 shadow-lg shadow-blue-500/20">
             <Trophy size={22} className="shrink-0" />
             <div className="flex-1">
               <p className="font-bold text-base leading-snug">
-                <span className="opacity-80">Best deal: </span>{best!.name}
+                <span className="opacity-80">{t.shopping.bestDeal} </span>{best.name}
               </p>
               <p className="text-sm opacity-80 mt-0.5">
-                {savingPct.toFixed(1)}% cheaper per unit than {worst.name} — save {formatCurrency(saving)} per 100{best!.calcInfo!.baseUnit}
+                {savingPct.toFixed(1)}% {t.shopping.cheaperThan} {worst.name} — {t.shopping.save} {formatCurrency(saving)} {t.shopping.per} 100{best.calcInfo!.baseUnit}
               </p>
             </div>
             <div className="font-mono font-bold text-xl sm:text-2xl shrink-0">
-              {best!.calcInfo!.costLabel}
+              {best.calcInfo!.costLabel}
             </div>
           </div>
         );
@@ -144,16 +146,15 @@ export default function Shopping() {
               }`}
             >
               <CardContent className="p-5">
-                {/* Header row: item number + best badge + delete */}
                 <div className="flex items-center justify-between mb-4">
                   <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
-                    Item {index + 1}
+                    {t.shopping.item} {index + 1}
                   </span>
                   <div className="flex items-center gap-2">
                     {item.isBest && (
                       <span className="flex items-center gap-1 text-blue-600 dark:text-blue-400 text-xs font-semibold bg-blue-100 dark:bg-blue-900/40 px-2.5 py-1 rounded-full">
                         <Trophy size={11} />
-                        BEST VALUE
+                        {t.shopping.bestValue}
                       </span>
                     )}
                     <Button
@@ -169,26 +170,24 @@ export default function Shopping() {
                   </div>
                 </div>
 
-                {/* Product name — full width */}
                 <div className="space-y-1.5 mb-4">
                   <Label htmlFor={`name-${item.id}`} className="text-xs text-muted-foreground uppercase font-bold tracking-wider">
-                    Product Name
+                    {t.shopping.productName}
                   </Label>
                   <Input
                     id={`name-${item.id}`}
                     value={item.name}
                     onChange={(e) => updateItem(item.id, "name", e.target.value)}
-                    placeholder="e.g. Brand A — Organic Oats 500g"
+                    placeholder={t.shopping.productPlaceholder}
                     className="h-11 text-base"
                     data-testid={`input-name-${item.id}`}
                   />
                 </div>
 
-                {/* Price / Qty / Unit — three generous columns */}
                 <div className="grid grid-cols-3 gap-3 mb-4">
                   <div className="space-y-1.5">
                     <Label htmlFor={`price-${item.id}`} className="text-xs text-muted-foreground uppercase font-bold tracking-wider">
-                      Price
+                      {t.shopping.price}
                     </Label>
                     <div className="relative">
                       <span className="absolute left-3 top-3 text-muted-foreground text-sm select-none">$</span>
@@ -210,7 +209,7 @@ export default function Shopping() {
 
                   <div className="space-y-1.5">
                     <Label htmlFor={`qty-${item.id}`} className="text-xs text-muted-foreground uppercase font-bold tracking-wider">
-                      Quantity
+                      {t.shopping.quantity}
                     </Label>
                     <Input
                       id={`qty-${item.id}`}
@@ -228,7 +227,7 @@ export default function Shopping() {
                   </div>
 
                   <div className="space-y-1.5">
-                    <Label className="text-xs text-muted-foreground uppercase font-bold tracking-wider">Unit</Label>
+                    <Label className="text-xs text-muted-foreground uppercase font-bold tracking-wider">{t.shopping.unit}</Label>
                     <Select
                       value={item.unit}
                       onValueChange={(val: Unit) => updateItem(item.id, "unit", val)}
@@ -248,17 +247,14 @@ export default function Shopping() {
                   </div>
                 </div>
 
-                {/* Result row */}
                 {item.calcInfo ? (
                   <div className="flex items-center justify-between rounded-lg bg-muted/60 px-4 py-3 border border-border">
-                    <span className="text-xs text-muted-foreground uppercase font-bold tracking-wider">Unit Price</span>
-                    <span className="font-mono text-lg font-bold text-foreground">
-                      {item.calcInfo.costLabel}
-                    </span>
+                    <span className="text-xs text-muted-foreground uppercase font-bold tracking-wider">{t.shopping.unitPrice}</span>
+                    <span className="font-mono text-lg font-bold text-foreground">{item.calcInfo.costLabel}</span>
                   </div>
                 ) : (
                   <div className="flex items-center justify-between rounded-lg bg-muted/30 px-4 py-3 border border-dashed border-border opacity-50">
-                    <span className="text-xs text-muted-foreground uppercase font-bold tracking-wider">Unit Price</span>
+                    <span className="text-xs text-muted-foreground uppercase font-bold tracking-wider">{t.shopping.unitPrice}</span>
                     <span className="font-mono text-lg text-muted-foreground">—</span>
                   </div>
                 )}
@@ -275,13 +271,13 @@ export default function Shopping() {
         data-testid="button-add-item"
       >
         <Plus size={18} className="mr-2" />
-        Add Item to Compare
+        {t.shopping.addItem}
       </Button>
 
       {analyzedItems.filter((i) => i.calcInfo).length === 0 && (
         <div className="text-center py-10 opacity-40 flex flex-col items-center gap-3">
           <Calculator size={44} className="text-muted-foreground" />
-          <p className="text-sm">Fill in a price and quantity to see the unit cost.</p>
+          <p className="text-sm">{t.shopping.emptyHint}</p>
         </div>
       )}
     </motion.div>
