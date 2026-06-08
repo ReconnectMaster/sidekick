@@ -53,8 +53,8 @@ export default function Discount() {
       <Tabs defaultValue="find-final" className="w-full">
         <TabsList className="grid w-full grid-cols-3 mb-6">
           <TabsTrigger value="find-final">{t.discount.findSalePrice}</TabsTrigger>
-          <TabsTrigger value="find-original">{t.discount.findOriginalPrice}</TabsTrigger>
           <TabsTrigger value="find-pct">{t.discount.findDiscountPct}</TabsTrigger>
+          <TabsTrigger value="find-original">{t.discount.findOriginalPrice}</TabsTrigger>
         </TabsList>
 
         {/* Tab 1 — Find Sale Price */}
