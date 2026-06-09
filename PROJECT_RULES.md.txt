@@ -1,0 +1,38 @@
+# PROJECT RULES
+
+Step1: Analyze this repository and explain:
+
+1. What tech stack this app uses
+2. How to run it locally on Windows
+3. What dependencies are missing
+4. Whether this app depends on Replit-specific features
+5. What files I need to change to run outside Replit
+6. Create a migration plan from Replit to GitHub deployment
+
+Do not rewrite the app yet.
+Just analyze first.
+
+
+Step2: Make this app runnable outside Replit.
+Now make this app runnable outside Replit.
+
+Tasks:
+1. Remove Replit dependencies
+2. Fix scripts and package setup
+3. Create .env.example if needed
+4. Make the app runnable locally
+5. Explain exactly how to start it
+6. Do not break existing functionality
+
+
+Step3: Follow this order:
+* Preserve working functionality
+* No major refactor
+* Additive changes only
+* Vanilla HTML/CSS/JS only
+* Mobile-first
+* Reusable modules
+* Do not redesign UI without permission
+* Explain changed files before editing
+* Minimize code changes
+* Keep calculator logic untouched

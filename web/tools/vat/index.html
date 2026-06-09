@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VAT — Calc Hub</title>
+    <link rel="stylesheet" href="/assets/css/tokens.css" />
+    <link rel="stylesheet" href="/assets/css/base.css" />
+    <link rel="stylesheet" href="/assets/css/layout.css" />
+    <link rel="stylesheet" href="/assets/css/components.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="mobile-header">
+        <div class="mobile-header__left"><button type="button" class="btn btn-ghost" id="mobile-menu-open"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg></button><div id="theme-toggle-mobile"></div></div>
+        <div class="mobile-header__center"><span data-brand>Calc Hub</span></div>
+        <div class="mobile-header__right" id="lang-toggle-mobile"></div>
+      </header>
+      <aside class="sidebar"><div class="sidebar__brand"><span data-brand>Calc Hub</span></div><nav class="sidebar__nav" id="sidebar-nav"></nav><div class="sidebar__footer"><div id="lang-toggle-desktop"></div><div id="theme-toggle-desktop"></div></div></aside>
+      <main class="main-content">
+        <div class="main-content__inner" id="vat-tool">
+          <header class="tool-header">
+            <div class="tool-header__icon bg-amber-soft accent-amber"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 2v20h16"/></svg></div>
+            <div><h1 class="page-title" data-i18n="vat.title">VAT Calculator</h1><p class="page-subtitle" data-i18n="vat.subtitle">Add or extract Value Added Tax.</p></div>
+          </header>
+          <div style="margin-bottom:1.5rem">
+            <span class="label-caps" data-i18n="vat.selectRate">Select VAT Rate</span>
+            <div style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:0.5rem;align-items:center">
+              <div id="vat-rate-buttons" style="display:flex;flex-wrap:wrap;gap:0.5rem"></div>
+              <div class="input-wrap" style="width:6rem"><input id="vat-rate-input" type="number" min="0" step="0.1" /><span style="position:absolute;right:0.5rem;top:50%;transform:translateY(-50%)">%</span></div>
+            </div>
+          </div>
+          <div data-tabs>
+            <div class="tab-list" role="tablist">
+              <button type="button" role="tab" data-tab="add" class="is-active" data-i18n="vat.addVat">Add VAT</button>
+              <button type="button" role="tab" data-tab="extract" data-i18n="vat.extractVat">Extract VAT</button>
+            </div>
+            <div role="tabpanel" data-tab-panel="add">
+              <div class="card card--accent-top border-t-amber"><div class="card__body tool-grid-2">
+                <label class="field"><span class="label-caps" data-i18n="vat.netPriceBefore">Net Price (Before VAT)</span><span class="input-wrap"><span class="input-prefix" data-currency-prefix>$</span><input id="vat-net" type="number" min="0" step="0.01" /></span></label>
+                <div class="result-panel">
+                  <div class="label-caps" data-i18n="vat.grossPriceFinal">Gross Price (Final)</div>
+                  <div class="result-panel__hero" id="vat-result-gross">$0.00</div>
+                  <div class="result-grid"><div><div class="label-caps" data-i18n="vat.vatAmount">VAT Amount</div><div class="mono accent-amber" id="vat-result-vat-add">$0.00</div></div><div><div class="label-caps" data-i18n="vat.netBase">Net Base</div><div class="mono" id="vat-result-net-base">$0.00</div></div></div>
+                </div>
+              </div></div>
+            </div>
+            <div role="tabpanel" data-tab-panel="extract" hidden>
+              <div class="card card--accent-top border-t-amber"><div class="card__body tool-grid-2">
+                <label class="field"><span class="label-caps" data-i18n="vat.grossPriceTotal">Gross Price (Final Total)</span><span class="input-wrap"><span class="input-prefix" data-currency-prefix>$</span><input id="vat-gross" type="number" min="0" step="0.01" /></span></label>
+                <div class="result-panel">
+                  <div class="label-caps" data-i18n="vat.netPriceExcl">Net Price (Excl. VAT)</div>
+                  <div class="result-panel__hero" id="vat-result-net">$0.00</div>
+                  <div class="result-grid"><div><div class="label-caps" data-i18n="vat.includedVat">Included VAT</div><div class="mono accent-amber" id="vat-result-vat-extract">$0.00</div></div><div><div class="label-caps" data-i18n="vat.grossTotal">Gross Total</div><div class="mono" id="vat-result-gross-total">$0.00</div></div></div>
+                </div>
+              </div></div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+    <div class="mobile-drawer" id="mobile-drawer" aria-hidden="true"><div class="mobile-drawer__backdrop" id="mobile-backdrop"></div><div class="mobile-drawer__panel"><div class="sidebar__brand"><span data-brand>Calc Hub</span></div><nav id="mobile-nav" class="sidebar__nav"></nav></div></div>
+    <script type="module" src="/assets/js/app.js"></script>
+  </body>
+</html>

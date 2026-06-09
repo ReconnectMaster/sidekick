@@ -1,6 +1,6 @@
 kind = "web"
 previewPath = "/"
-title = "Calculator Portal"
+title = "Calc Hub"
 version = "1.0.0"
 id = "artifacts/calculator-portal"
 router = "path"

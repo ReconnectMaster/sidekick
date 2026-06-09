@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profit &amp; Margin — Calc Hub</title>
+    <link rel="stylesheet" href="/assets/css/tokens.css" />
+    <link rel="stylesheet" href="/assets/css/base.css" />
+    <link rel="stylesheet" href="/assets/css/layout.css" />
+    <link rel="stylesheet" href="/assets/css/components.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="mobile-header">
+        <div class="mobile-header__left"><button type="button" class="btn btn-ghost" id="mobile-menu-open"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg></button><div id="theme-toggle-mobile"></div></div>
+        <div class="mobile-header__center"><span data-brand>Calc Hub</span></div>
+        <div class="mobile-header__right" id="lang-toggle-mobile"></div>
+      </header>
+      <aside class="sidebar"><div class="sidebar__brand"><span data-brand>Calc Hub</span></div><nav class="sidebar__nav" id="sidebar-nav"></nav><div class="sidebar__footer"><div id="lang-toggle-desktop"></div><div id="theme-toggle-desktop"></div></div></aside>
+      <main class="main-content">
+        <div class="main-content__inner" id="profit-tool">
+          <header class="tool-header">
+            <div class="tool-header__icon bg-purple-soft accent-purple"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg></div>
+            <div><h1 class="page-title" data-i18n="profit.title">Profit &amp; Margin</h1><p class="page-subtitle" data-i18n="profit.subtitle">Calculate absolute profit, margin, and markup.</p></div>
+          </header>
+          <div data-tabs>
+            <div class="tab-list" role="tablist">
+              <button type="button" role="tab" data-tab="margin" class="is-active" data-i18n="profit.calcMargin">Calculate Margin</button>
+              <button type="button" role="tab" data-tab="target" data-i18n="profit.targetMargin">Target Margin</button>
+            </div>
+            <div role="tabpanel" data-tab-panel="margin">
+              <div class="card card--accent-top border-t-purple"><div class="card__body tool-grid-2">
+                <div>
+                  <label class="field"><span class="label-caps" data-i18n="profit.costPrice">Cost Price</span><span class="input-wrap"><span class="input-prefix" data-currency-prefix>$</span><input class="profit-cost-input" type="number" min="0" step="0.01" /></span></label>
+                  <label class="field" style="margin-top:1rem"><span class="label-caps" data-i18n="profit.sellingPrice">Selling Price</span><span class="input-wrap"><span class="input-prefix" data-currency-prefix>$</span><input id="profit-selling" type="number" min="0" step="0.01" /></span></label>
+                </div>
+                <div class="result-panel">
+                  <div class="label-caps" data-i18n="profit.grossProfit">Gross Profit</div>
+                  <div class="result-panel__hero accent-purple" id="profit-result-profit">$0.00</div>
+                  <div class="result-grid">
+                    <div><div class="label-caps" data-i18n="profit.margin">Margin</div><div class="mono" id="profit-result-margin">0%</div><small class="page-subtitle" data-i18n="profit.profitOverRevenue">Profit / Revenue</small></div>
+                    <div><div class="label-caps" data-i18n="profit.markup">Markup</div><div class="mono" id="profit-result-markup">0%</div><small class="page-subtitle" data-i18n="profit.profitOverCost">Profit / Cost</small></div>
+                  </div>
+                </div>
+              </div></div>
+            </div>
+            <div role="tabpanel" data-tab-panel="target" hidden>
+              <div class="card card--accent-top border-t-purple"><div class="card__body tool-grid-2">
+                <div>
+                  <label class="field"><span class="label-caps" data-i18n="profit.costPrice">Cost Price</span><span class="input-wrap"><span class="input-prefix" data-currency-prefix>$</span><input class="profit-cost-input" type="number" min="0" step="0.01" /></span></label>
+                  <label class="field" style="margin-top:1rem"><span class="label-caps" data-i18n="profit.desiredMargin">Desired Margin</span><input id="profit-margin" type="number" min="0" max="99" step="1" /><small class="page-subtitle" data-i18n="profit.mustBeLess">Must be less than 100%</small></label>
+                </div>
+                <div class="result-panel">
+                  <div class="label-caps" data-i18n="profit.requiredSellingPrice">Required Selling Price</div>
+                  <div class="result-panel__hero" id="profit-result-required-price">$0.00</div>
+                  <div class="result-grid">
+                    <div><div class="label-caps" data-i18n="profit.profitAmount">Profit Amount</div><div class="mono accent-purple" id="profit-result-profit-amount">$0.00</div></div>
+                    <div><div class="label-caps" data-i18n="profit.costBase">Cost Base</div><div class="mono" id="profit-result-cost-base">$0.00</div></div>
+                  </div>
+                </div>
+              </div></div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+    <div class="mobile-drawer" id="mobile-drawer" aria-hidden="true"><div class="mobile-drawer__backdrop" id="mobile-backdrop"></div><div class="mobile-drawer__panel"><div class="sidebar__brand"><span data-brand>Calc Hub</span></div><nav id="mobile-nav" class="sidebar__nav"></nav></div></div>
+    <script type="module" src="/assets/js/app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gold &amp; Jewelry — Calc Hub</title>
+    <link rel="stylesheet" href="/assets/css/tokens.css" />
+    <link rel="stylesheet" href="/assets/css/base.css" />
+    <link rel="stylesheet" href="/assets/css/layout.css" />
+    <link rel="stylesheet" href="/assets/css/components.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="mobile-header">
+        <div class="mobile-header__left"><button type="button" class="btn btn-ghost" id="mobile-menu-open"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg></button><div id="theme-toggle-mobile"></div></div>
+        <div class="mobile-header__center"><span data-brand>Calc Hub</span></div>
+        <div class="mobile-header__right" id="lang-toggle-mobile"></div>
+      </header>
+      <aside class="sidebar"><div class="sidebar__brand"><span data-brand>Calc Hub</span></div><nav class="sidebar__nav" id="sidebar-nav"></nav><div class="sidebar__footer"><div id="lang-toggle-desktop"></div><div id="theme-toggle-desktop"></div></div></aside>
+      <main class="main-content">
+        <div class="main-content__inner" id="gold-tool">
+          <header class="tool-header">
+            <div class="tool-header__icon bg-yellow-soft accent-yellow"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h12l4 6-10 13L2 9Z"/></svg></div>
+            <div><h1 class="page-title" data-i18n="gold.title">Gold &amp; Jewelry</h1><p class="page-subtitle" data-i18n="gold.subtitle">Convert budget to gold weight, or gold to cash — instantly.</p></div>
+          </header>
+          <div class="card card--accent-top border-t-yellow"><div class="card__body">
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap">
+              <span class="label-caps" data-i18n="gold.goldPriceLabel">Spot Gold Price</span>
+              <div class="gold-mode-toggle" role="tablist">
+                <button type="button" data-gold-mode="buy" class="is-active" aria-selected="true" data-i18n="gold.modeBuy">Buy</button>
+                <button type="button" data-gold-mode="sell" aria-selected="false" data-i18n="gold.modeSell">Sell</button>
+              </div>
+            </div>
+            <div style="display:flex;gap:0.75rem;margin-top:1rem">
+              <label class="field" style="flex:1"><span class="input-wrap"><span class="input-prefix" data-currency-prefix>$</span><input id="gold-price" type="number" min="0" step="0.01" placeholder="0.00" /></span></label>
+              <span class="label-caps" style="align-self:center" data-i18n="gold.perGram">/ gram</span>
+            </div>
+            <label class="field" style="margin-top:1rem"><span class="label-caps" data-i18n="gold.goldType">Gold Type</span><select id="gold-type"></select></label>
+          </div></div>
+          <div class="card" style="margin-top:1rem"><div class="card__body">
+            <p class="label-caps" data-i18n="gold.converter">Amount ↔ Weight</p>
+            <div class="converter-box is-active" id="gold-money-box" style="margin-top:0.75rem">
+              <span class="label-caps" data-i18n="gold.budget">Budget</span>
+              <div class="input-wrap"><span class="input-prefix" data-currency-prefix>$</span><input id="gold-money" type="number" min="0" step="0.01" /></div>
+            </div>
+            <p class="page-subtitle" style="text-align:center;margin:0.75rem 0" data-i18n="gold.swapHint">type either side — both update</p>
+            <div class="converter-box" id="gold-weight-box">
+              <span class="label-caps" data-i18n="gold.goldWeight">Gold Weight</span>
+              <input id="gold-weight" type="number" min="0" step="0.0001" placeholder="0.0000" />
+            </div>
+          </div></div>
+          <button type="button" class="btn btn-block" id="gold-advanced-toggle" style="margin-top:1rem" data-i18n="gold.advanced">Advanced Options</button>
+          <div id="gold-advanced-panel">
+            <div class="card" id="gold-advanced-body" hidden style="margin-top:0.5rem"><div class="card__body tool-grid-2">
+              <label class="field"><span class="label-caps" data-i18n="gold.makingFee">Making Fee</span><span class="input-wrap"><span class="input-prefix" data-currency-prefix>$</span><input id="gold-making-fee" type="number" min="0" step="50" /></span><small class="page-subtitle" data-i18n="gold.makingFeeHint">per baht-weight (15.244 g)</small></label>
+              <label class="field"><span class="label-caps" data-i18n="gold.spread">Spread</span><input id="gold-spread" type="number" min="0" max="100" step="0.1" /><small class="page-subtitle" data-i18n="gold.spreadHint">Dealer markup over spot</small></label>
+              <label class="field" style="grid-column:1/-1;display:flex;justify-content:space-between;align-items:center"><span data-i18n="gold.includeVat">Include 7% VAT</span><input id="gold-include-vat" type="checkbox" /></label>
+            </div></div>
+          </div>
+          <p class="empty-state" id="gold-empty" data-i18n="gold.noPrice">Enter today's spot gold price per gram to get started</p>
+          <div id="gold-results" hidden style="margin-top:1rem">
+            <div class="card"><div class="card__body">
+              <p class="label-caps" data-i18n="gold.results">Cost Breakdown</p>
+              <div id="gold-row-value" class="result-grid" style="margin-top:1rem;border:none;padding:0"><span data-i18n="gold.goldValue">Gold Value</span><span class="mono" data-value>$0.00</span></div>
+              <div id="gold-row-spread" hidden style="display:flex;justify-content:space-between;margin-top:0.5rem"><span data-i18n="gold.spreadLabel">Spread</span><span class="mono" data-value>$0.00</span></div>
+              <div id="gold-row-making" hidden style="display:flex;justify-content:space-between;margin-top:0.5rem"><span data-i18n="gold.makingFeeLabel">Making Fee</span><span class="mono" data-value>$0.00</span></div>
+              <div id="gold-row-vat" hidden style="display:flex;justify-content:space-between;margin-top:0.5rem"><span data-i18n="gold.vatLabel">VAT (7%)</span><span class="mono" data-value>$0.00</span></div>
+              <div style="display:flex;justify-content:space-between;margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border)"><strong data-i18n="gold.total">Total</strong><strong class="mono accent-yellow" id="gold-total">$0.00</strong></div>
+            </div></div>
+            <div class="card" id="gold-thai-weight" hidden style="margin-top:1rem"><div class="card__body" style="display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap">
+              <span class="label-caps" data-i18n="gold.weightInThaiUnits">Thai Weight</span>
+              <div style="display:flex;gap:1.25rem">
+                <div id="gold-thai-baht-wrap" class="stat-card"><div class="stat-card__value accent-yellow" id="gold-thai-baht">0</div><div class="label-caps" data-i18n="gold.baht">baht</div></div>
+                <div id="gold-thai-salung-wrap" class="stat-card"><div class="stat-card__value accent-yellow" id="gold-thai-salung">0</div><div class="label-caps" data-i18n="gold.salung">salung</div></div>
+                <div id="gold-thai-hun-wrap" class="stat-card"><div class="stat-card__value accent-yellow" id="gold-thai-hun">0</div><div class="label-caps" data-i18n="gold.hun">hun</div></div>
+              </div>
+            </div></div>
+            <div id="gold-insights"></div>
+          </div>
+        </div>
+      </main>
+    </div>
+    <div class="mobile-drawer" id="mobile-drawer" aria-hidden="true"><div class="mobile-drawer__backdrop" id="mobile-backdrop"></div><div class="mobile-drawer__panel"><div class="sidebar__brand"><span data-brand>Calc Hub</span></div><nav id="mobile-nav" class="sidebar__nav"></nav></div></div>
+    <script type="module" src="/assets/js/app.js"></script>
+  </body>
+</html>

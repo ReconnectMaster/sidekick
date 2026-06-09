@@ -1,0 +1,53 @@
+/**
+ * Design tokens — colors, spacing, typography.
+ * Edit this file to retheme the whole app.
+ */
+
+:root {
+  --font-sans: "Plus Jakarta Sans", system-ui, sans-serif;
+  --font-mono: "Space Mono", ui-monospace, monospace;
+
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+
+  --bg: #fafafa;
+  --fg: #0a0a0f;
+  --card: #ffffff;
+  --border: #e4e4e7;
+  --muted: #f4f4f5;
+  --muted-fg: #71717a;
+  --primary: #18181b;
+  --primary-fg: #fafafa;
+
+  --accent-blue: #3b82f6;
+  --accent-green: #22c55e;
+  --accent-yellow: #eab308;
+  --accent-amber: #f59e0b;
+  --accent-purple: #a855f7;
+  --accent-indigo: #6366f1;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.dark {
+  --bg: #09090b;
+  --fg: #fafafa;
+  --card: #09090b;
+  --border: #27272a;
+  --muted: #18181b;
+  --muted-fg: #a1a1aa;
+  --primary: #fafafa;
+  --primary-fg: #18181b;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.35);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.45);
+}

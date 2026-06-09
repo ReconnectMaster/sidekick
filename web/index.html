@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Calc Hub — precise everyday calculators for shopping, discounts, gold, VAT, profit, and word count." />
+    <title>Calc Hub</title>
+    <link rel="stylesheet" href="/assets/css/tokens.css" />
+    <link rel="stylesheet" href="/assets/css/base.css" />
+    <link rel="stylesheet" href="/assets/css/layout.css" />
+    <link rel="stylesheet" href="/assets/css/components.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="mobile-header">
+        <div class="mobile-header__left">
+          <button type="button" class="btn btn-ghost" id="mobile-menu-open" aria-expanded="false" aria-controls="mobile-drawer">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+          </button>
+          <div id="theme-toggle-mobile"></div>
+        </div>
+        <div class="mobile-header__center">
+          <span data-brand>Calc Hub</span>
+        </div>
+        <div class="mobile-header__right" id="lang-toggle-mobile"></div>
+      </header>
+
+      <aside class="sidebar">
+        <div class="sidebar__brand">
+          <span data-brand>Calc Hub</span>
+        </div>
+        <nav class="sidebar__nav" id="sidebar-nav" aria-label="Main"></nav>
+        <div class="sidebar__footer">
+          <div id="lang-toggle-desktop"></div>
+          <div id="theme-toggle-desktop"></div>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <div class="main-content__inner">
+          <section class="home-hero">
+            <h1 class="page-title" data-i18n="home.title">Toolkit</h1>
+            <p class="page-subtitle" data-i18n="home.subtitle">Precise, instant calculators for everyday utility.</p>
+          </section>
+          <div class="home-grid" id="home-tool-grid"></div>
+        </div>
+      </main>
+    </div>
+
+    <div class="mobile-drawer" id="mobile-drawer" aria-hidden="true">
+      <div class="mobile-drawer__backdrop" id="mobile-backdrop"></div>
+      <div class="mobile-drawer__panel">
+        <div class="sidebar__brand"><span data-brand>Calc Hub</span></div>
+        <nav id="mobile-nav" class="sidebar__nav" aria-label="Mobile"></nav>
+      </div>
+    </div>
+
+    <script type="module" src="/assets/js/app.js"></script>
+  </body>
+</html>

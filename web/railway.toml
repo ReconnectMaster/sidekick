@@ -1,0 +1,7 @@
+# Railway static site — set root directory to "web" in the Railway dashboard.
+[build]
+builder = "NIXPACKS"
+
+[deploy]
+startCommand = "npm start"
+restartPolicyType = "ON_FAILURE"

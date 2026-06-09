@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shopping — Calc Hub</title>
+    <link rel="stylesheet" href="/assets/css/tokens.css" />
+    <link rel="stylesheet" href="/assets/css/base.css" />
+    <link rel="stylesheet" href="/assets/css/layout.css" />
+    <link rel="stylesheet" href="/assets/css/components.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="mobile-header">
+        <div class="mobile-header__left">
+          <button type="button" class="btn btn-ghost" id="mobile-menu-open" aria-expanded="false"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg></button>
+          <div id="theme-toggle-mobile"></div>
+        </div>
+        <div class="mobile-header__center"><span data-brand>Calc Hub</span></div>
+        <div class="mobile-header__right" id="lang-toggle-mobile"></div>
+      </header>
+      <aside class="sidebar">
+        <div class="sidebar__brand"><span data-brand>Calc Hub</span></div>
+        <nav class="sidebar__nav" id="sidebar-nav"></nav>
+        <div class="sidebar__footer">
+          <div id="lang-toggle-desktop"></div>
+          <div id="theme-toggle-desktop"></div>
+        </div>
+      </aside>
+      <main class="main-content">
+        <div class="main-content__inner">
+          <header class="tool-header">
+            <div class="tool-header__icon bg-blue-soft accent-blue"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg></div>
+            <div>
+              <h1 class="page-title" data-i18n="shopping.title">Shopping</h1>
+              <p class="page-subtitle" data-i18n="shopping.subtitle">Compare price-per-unit across products.</p>
+            </div>
+          </header>
+          <div id="shopping-list"></div>
+          <div class="summary-box" id="shopping-summary" hidden></div>
+          <button type="button" class="btn btn-outline btn-block" id="shopping-add" data-i18n="shopping.addItem">Add Item to Compare</button>
+          <div class="empty-state" id="shopping-empty" data-i18n="shopping.emptyHint">Fill in a price and quantity to see the unit cost.</div>
+        </div>
+      </main>
+    </div>
+    <div class="mobile-drawer" id="mobile-drawer" aria-hidden="true">
+      <div class="mobile-drawer__backdrop" id="mobile-backdrop"></div>
+      <div class="mobile-drawer__panel"><div class="sidebar__brand"><span data-brand>Calc Hub</span></div><nav id="mobile-nav" class="sidebar__nav"></nav></div>
+    </div>
+    <script type="module" src="/assets/js/app.js"></script>
+  </body>
+</html>

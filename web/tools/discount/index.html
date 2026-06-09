@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Discount — Calc Hub</title>
+    <link rel="stylesheet" href="/assets/css/tokens.css" />
+    <link rel="stylesheet" href="/assets/css/base.css" />
+    <link rel="stylesheet" href="/assets/css/layout.css" />
+    <link rel="stylesheet" href="/assets/css/components.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="mobile-header">
+        <div class="mobile-header__left"><button type="button" class="btn btn-ghost" id="mobile-menu-open" aria-expanded="false"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg></button><div id="theme-toggle-mobile"></div></div>
+        <div class="mobile-header__center"><span data-brand>Calc Hub</span></div>
+        <div class="mobile-header__right" id="lang-toggle-mobile"></div>
+      </header>
+      <aside class="sidebar"><div class="sidebar__brand"><span data-brand>Calc Hub</span></div><nav class="sidebar__nav" id="sidebar-nav"></nav><div class="sidebar__footer"><div id="lang-toggle-desktop"></div><div id="theme-toggle-desktop"></div></div></aside>
+      <main class="main-content">
+        <div class="main-content__inner" id="discount-tool">
+          <header class="tool-header">
+            <div class="tool-header__icon bg-green-soft accent-green"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" x2="5" y1="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg></div>
+            <div><h1 class="page-title" data-i18n="discount.title">Discount</h1><p class="page-subtitle" data-i18n="discount.subtitle">Find sale prices or calculate original costs.</p></div>
+          </header>
+          <div data-tabs>
+            <div class="tab-list" role="tablist">
+              <button type="button" role="tab" data-tab="final" class="is-active" data-i18n="discount.findSalePrice">Final Price</button>
+              <button type="button" role="tab" data-tab="pct" data-i18n="discount.findDiscountPct">Find Discount %</button>
+              <button type="button" role="tab" data-tab="original" data-i18n="discount.findOriginalPrice">Original Price</button>
+            </div>
+            <div role="tabpanel" data-tab-panel="final">
+              <div class="card card--accent-top border-t-green"><div class="card__body tool-grid-2">
+                <div>
+                  <label class="field"><span class="label-caps" data-i18n="discount.originalPrice">Original Price</span><span class="input-wrap"><span class="input-prefix" data-currency-prefix>$</span><input id="discount-original" type="number" min="0" step="0.01" placeholder="0.00" /></span></label>
+                  <label class="field" style="margin-top:1rem"><span class="label-caps" data-i18n="discount.discountPercentage">Discount Percentage</span><input id="discount-percent" type="number" min="0" max="100" step="1" placeholder="0" /></label>
+                </div>
+                <div class="result-panel">
+                  <div class="label-caps" data-i18n="discount.finalSalePrice">Final Sale Price</div>
+                  <div class="result-panel__hero accent-green" id="discount-result-final">$0.00</div>
+                  <div class="result-grid"><div><div class="label-caps" data-i18n="discount.youSave">You Save</div><div class="mono accent-green" id="discount-result-save">$0.00</div></div></div>
+                </div>
+              </div></div>
+            </div>
+            <div role="tabpanel" data-tab-panel="pct" hidden>
+              <div class="card card--accent-top border-t-green"><div class="card__body tool-grid-2">
+                <div>
+                  <label class="field"><span class="label-caps" data-i18n="discount.originalPrice">Original Price</span><span class="input-wrap"><span class="input-prefix" data-currency-prefix>$</span><input id="discount-orig-pct" type="number" min="0" step="0.01" /></span></label>
+                  <label class="field" style="margin-top:1rem"><span class="label-caps" data-i18n="discount.finalPrice">Final Price</span><span class="input-wrap"><span class="input-prefix" data-currency-prefix>$</span><input id="discount-final-pct" type="number" min="0" step="0.01" /></span></label>
+                  <p id="discount-pct-hint" class="page-subtitle" data-i18n="discount.enterBothPrices">Enter both prices above to see the discount.</p>
+                </div>
+                <div class="result-panel">
+                  <div class="label-caps" data-i18n="discount.discountRate">Discount Rate</div>
+                  <div class="result-panel__hero" id="discount-result-rate">0%</div>
+                  <div class="result-grid"><div><div class="label-caps" data-i18n="discount.amountSaved">Amount Saved</div><div class="mono" id="discount-result-amount-saved">$0.00</div></div></div>
+                </div>
+              </div></div>
+            </div>
+            <div role="tabpanel" data-tab-panel="original" hidden>
+              <div class="card card--accent-top border-t-green"><div class="card__body tool-grid-2">
+                <div>
+                  <label class="field"><span class="label-caps" data-i18n="discount.finalPrice">Final Price</span><span class="input-wrap"><span class="input-prefix" data-currency-prefix>$</span><input id="discount-final-reverse" type="number" min="0" step="0.01" /></span></label>
+                  <label class="field" style="margin-top:1rem"><span class="label-caps" data-i18n="discount.discountPercentage">Discount Percentage</span><input id="discount-percent-reverse" type="number" min="0" max="100" step="1" /></label>
+                </div>
+                <div class="result-panel">
+                  <div class="label-caps" data-i18n="discount.originalPriceWas">Original Price Was</div>
+                  <div class="result-panel__hero" id="discount-result-original">$0.00</div>
+                  <div class="result-grid"><div><div class="label-caps" data-i18n="discount.totalSavings">Total Savings</div><div class="mono accent-green" id="discount-result-save-reverse">$0.00</div></div></div>
+                </div>
+              </div></div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+    <div class="mobile-drawer" id="mobile-drawer" aria-hidden="true"><div class="mobile-drawer__backdrop" id="mobile-backdrop"></div><div class="mobile-drawer__panel"><div class="sidebar__brand"><span data-brand>Calc Hub</span></div><nav id="mobile-nav" class="sidebar__nav"></nav></div></div>
+    <script type="module" src="/assets/js/app.js"></script>
+  </body>
+</html>

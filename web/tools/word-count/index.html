@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Word Count — Calc Hub</title>
+    <link rel="stylesheet" href="/assets/css/tokens.css" />
+    <link rel="stylesheet" href="/assets/css/base.css" />
+    <link rel="stylesheet" href="/assets/css/layout.css" />
+    <link rel="stylesheet" href="/assets/css/components.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="mobile-header">
+        <div class="mobile-header__left"><button type="button" class="btn btn-ghost" id="mobile-menu-open"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg></button><div id="theme-toggle-mobile"></div></div>
+        <div class="mobile-header__center"><span data-brand>Calc Hub</span></div>
+        <div class="mobile-header__right" id="lang-toggle-mobile"></div>
+      </header>
+      <aside class="sidebar"><div class="sidebar__brand"><span data-brand>Calc Hub</span></div><nav class="sidebar__nav" id="sidebar-nav"></nav><div class="sidebar__footer"><div id="lang-toggle-desktop"></div><div id="theme-toggle-desktop"></div></div></aside>
+      <main class="main-content">
+        <div class="main-content__inner">
+          <header class="tool-header">
+            <div class="tool-header__icon bg-indigo-soft accent-indigo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/></svg></div>
+            <div><h1 class="page-title" data-i18n="wordCount.title">Word Count</h1><p class="page-subtitle" data-i18n="wordCount.subtitle">Analyze text statistics instantly as you type.</p></div>
+          </header>
+          <div class="card card--accent-top border-t-indigo"><div class="card__body">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem">
+              <span class="label-caps" data-i18n="wordCount.yourText">Your Text</span>
+              <button type="button" class="btn btn-ghost" id="word-count-clear" data-i18n="wordCount.clear">Clear</button>
+            </div>
+            <textarea id="word-count-text" data-i18n-placeholder="wordCount.placeholder" placeholder="Type or paste your text here..."></textarea>
+            <p class="page-subtitle" style="text-align:right;margin:0.5rem 0 0" data-i18n="wordCount.hint">Results update instantly as you type.</p>
+          </div></div>
+          <div class="stat-grid" style="margin-top:1rem">
+            <div class="card stat-card"><div><p class="label-caps" data-i18n="wordCount.words">Words</p><p class="stat-card__value accent-indigo" id="word-stat-words">0</p></div></div>
+            <div class="card stat-card"><div><p class="label-caps" data-i18n="wordCount.characters">Characters</p><p class="stat-card__value" id="word-stat-chars">0</p></div></div>
+            <div class="card stat-card"><div><p class="label-caps" data-i18n="wordCount.charsNoSpaces">Characters (no spaces)</p><p class="stat-card__value" id="word-stat-charsNoSp">0</p></div></div>
+            <div class="card stat-card"><div><p class="label-caps" data-i18n="wordCount.sentences">Sentences</p><p class="stat-card__value" id="word-stat-sentences">0</p></div></div>
+            <div class="card stat-card"><div><p class="label-caps" data-i18n="wordCount.paragraphs">Paragraphs</p><p class="stat-card__value" id="word-stat-paragraphs">0</p></div></div>
+            <div class="card stat-card"><div><p class="label-caps" data-i18n="wordCount.lines">Lines</p><p class="stat-card__value" id="word-stat-lines">0</p></div></div>
+          </div>
+          <div class="reading-banner" id="word-reading-time" hidden style="margin-top:1rem">
+            <div><p style="margin:0;font-weight:700" data-i18n="wordCount.readingTime">Estimated reading time</p><p style="margin:0.25rem 0 0;opacity:0.85;font-size:0.9rem" data-i18n="wordCount.readingTimeHint">Based on average reading speed of 200 words/min</p></div>
+            <div class="mono" style="font-size:2rem;font-weight:700"><span data-reading-value>0</span> <span data-reading-unit>mins</span></div>
+          </div>
+        </div>
+      </main>
+    </div>
+    <div class="mobile-drawer" id="mobile-drawer" aria-hidden="true"><div class="mobile-drawer__backdrop" id="mobile-backdrop"></div><div class="mobile-drawer__panel"><div class="sidebar__brand"><span data-brand>Calc Hub</span></div><nav id="mobile-nav" class="sidebar__nav"></nav></div></div>
+    <script type="module" src="/assets/js/app.js"></script>
+  </body>
+</html>
