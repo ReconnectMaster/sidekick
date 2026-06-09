@@ -149,7 +149,7 @@ export default function Shopping() {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-3 gap-3 mb-4">
+                <div className="grid gap-3 mb-4" style={{ gridTemplateColumns: "3fr 2fr 3.5rem" }}>
                   <div className="space-y-1.5">
                     <Label className="text-xs text-muted-foreground uppercase font-bold tracking-wider">
                       {t.shopping.price}
@@ -184,8 +184,8 @@ export default function Shopping() {
                       {t.shopping.unit}
                     </Label>
                     <Select value={item.unit} onValueChange={(val: Unit) => updateItem(item.id, "unit", val)}>
-                      <SelectTrigger className="h-11 text-base">
-                        <SelectValue />
+                      <SelectTrigger className="h-11 px-2 text-sm font-mono font-semibold">
+                        <span>{item.unit}</span>
                       </SelectTrigger>
                       <SelectContent>
                         {UNIT_ORDER.map((u) => (
@@ -246,7 +246,7 @@ export default function Shopping() {
               {" "}{t.shopping.summaryBest}
               {" — "}{t.shopping.unitPrice}{" "}
               <span className="font-bold font-mono">{best.calcInfo!.costLabel}</span>
-              {", "}
+              {" — "}
               <span className="font-bold">{pct}%</span>{" "}
               {t.shopping.summaryCheaper}
             </p>
