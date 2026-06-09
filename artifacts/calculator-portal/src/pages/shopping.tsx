@@ -9,15 +9,16 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { formatCurrency } from "@/lib/format";
 import { useTranslation } from "@/i18n";
 
-type Unit = "g" | "kg" | "ml" | "L" | "oz" | "lb";
+type Unit = "pcs" | "ml" | "L" | "g" | "kg" | "oz" | "lb";
 
-const UNIT_MULTIPLIERS: Record<Unit, { base: "g" | "ml"; multiplier: number }> = {
-  g:  { base: "g",  multiplier: 1 },
-  kg: { base: "g",  multiplier: 1000 },
-  oz: { base: "g",  multiplier: 28.3495 },
-  lb: { base: "g",  multiplier: 453.592 },
-  ml: { base: "ml", multiplier: 1 },
-  L:  { base: "ml", multiplier: 1000 },
+const UNIT_MULTIPLIERS: Record<Unit, { base: string; multiplier: number }> = {
+  pcs: { base: "pcs", multiplier: 1 },
+  ml:  { base: "ml",  multiplier: 1 },
+  L:   { base: "ml",  multiplier: 1000 },
+  g:   { base: "g",   multiplier: 1 },
+  kg:  { base: "g",   multiplier: 1000 },
+  oz:  { base: "g",   multiplier: 28.3495 },
+  lb:  { base: "g",   multiplier: 453.592 },
 };
 
 interface Item {
@@ -29,19 +30,16 @@ interface Item {
 }
 
 export default function Shopping() {
-  const { t, currency, currencySymbol, fmtCurrency } = useTranslation();
+  const { t, lang, currency, currencySymbol, fmtCurrency } = useTranslation();
+
   const [items, setItems] = useState<Item[]>([
-    { id: "1", name: "", price: "", quantity: "", unit: "g" },
-    { id: "2", name: "", price: "", quantity: "", unit: "g" },
-    { id: "3", name: "", price: "", quantity: "", unit: "g" },
+    { id: "1", name: "", price: "", quantity: "", unit: "pcs" },
+    { id: "2", name: "", price: "", quantity: "", unit: "pcs" },
+    { id: "3", name: "", price: "", quantity: "", unit: "pcs" },
   ]);
 
-  const addItem = () => {
-    setItems([
-      ...items,
-      { id: Math.random().toString(36).substring(7), name: `Item ${items.length + 1}`, price: "", quantity: "", unit: "g" },
-    ]);
-  };
+  const addItem = () =>
+    setItems([...items, { id: Math.random().toString(36).substring(7), name: "", price: "", quantity: "", unit: "pcs" }]);
 
   const removeItem = (id: string) => setItems(items.filter((item) => item.id !== id));
 
@@ -50,8 +48,13 @@ export default function Shopping() {
       item.id === id ? { ...item, name: "", price: "", quantity: "" } : item
     ));
 
-  const updateItem = (id: string, field: keyof Item, value: any) => {
+  const updateItem = (id: string, field: keyof Item, value: any) =>
     setItems(items.map((item) => (item.id === id ? { ...item, [field]: value } : item)));
+
+  // Translate base unit label for display (only pcs differs in Thai)
+  const displayBase = (base: string) => {
+    if (base === "pcs" && lang === "th") return "ชิ้น";
+    return base;
   };
 
   const analyzedItems = useMemo(() => {
@@ -66,17 +69,18 @@ export default function Shopping() {
     const calculated = validItems.map((item) => {
       const { base, multiplier } = UNIT_MULTIPLIERS[item.unit];
       const baseQuantity = (item.quantity as number) * multiplier;
-      const costPerStandard = ((item.price as number) / baseQuantity) * 100;
+      const costPerUnit = (item.price as number) / baseQuantity;
+      const baseLabel = base === "pcs" && lang === "th" ? "ชิ้น" : base;
       return {
         ...item,
         baseQuantity,
         baseUnit: base,
-        costPerStandard,
-        costLabel: `${formatCurrency(costPerStandard, currency)} / 100${base}`,
+        costPerUnit,
+        costLabel: `${formatCurrency(costPerUnit, currency)} / 1 ${baseLabel}`,
       };
     });
 
-    const sorted = [...calculated].sort((a, b) => a.costPerStandard - b.costPerStandard);
+    const sorted = [...calculated].sort((a, b) => a.costPerUnit - b.costPerUnit);
 
     return items.map((item) => {
       const calcInfo = sorted.find((s) => s.id === item.id);
@@ -86,7 +90,9 @@ export default function Shopping() {
         isBest: sorted.length > 1 && sorted[0].id === item.id && calcInfo !== undefined,
       };
     });
-  }, [items, currency]);
+  }, [items, currency, lang]);
+
+  const UNIT_ORDER: Unit[] = ["pcs", "ml", "L", "g", "kg", "oz", "lb"];
 
   return (
     <motion.div
@@ -104,34 +110,6 @@ export default function Shopping() {
           <p className="text-muted-foreground">{t.shopping.subtitle}</p>
         </div>
       </div>
-
-      {/* Summary banner */}
-      {(() => {
-        const valid = analyzedItems.filter((i) => i.calcInfo);
-        const best  = valid.find((i) => i.isBest);
-        if (valid.length < 2 || !best) return null;
-        const worst = [...valid].sort(
-          (a, b) => b.calcInfo!.costPerStandard - a.calcInfo!.costPerStandard
-        )[0];
-        const saving    = worst.calcInfo!.costPerStandard - best.calcInfo!.costPerStandard;
-        const savingPct = (saving / worst.calcInfo!.costPerStandard) * 100;
-        return (
-          <div className="rounded-xl bg-blue-500 text-white px-5 py-4 flex flex-col sm:flex-row sm:items-center gap-3 shadow-lg shadow-blue-500/20">
-            <Trophy size={22} className="shrink-0" />
-            <div className="flex-1">
-              <p className="font-bold text-base leading-snug">
-                <span className="opacity-80">{t.shopping.bestDeal} </span>{best.name}
-              </p>
-              <p className="text-sm opacity-80 mt-0.5">
-                {savingPct.toFixed(1)}% {t.shopping.cheaperThan} {worst.name} — {t.shopping.save} {fmtCurrency(saving)} {t.shopping.per} 100{best.calcInfo!.baseUnit}
-              </p>
-            </div>
-            <div className="font-mono font-bold text-xl sm:text-2xl shrink-0">
-              {best.calcInfo!.costLabel}
-            </div>
-          </div>
-        );
-      })()}
 
       <div className="space-y-4">
         {analyzedItems.map((item, index) => (
@@ -166,7 +144,6 @@ export default function Shopping() {
                       className="h-7 w-7 text-muted-foreground hover:text-destructive"
                       onClick={() => removeItem(item.id)}
                       disabled={items.length <= 1}
-                      data-testid={`button-remove-${item.id}`}
                     >
                       <Trash2 size={15} />
                     </Button>
@@ -174,86 +151,75 @@ export default function Shopping() {
                 </div>
 
                 <div className="space-y-1.5 mb-4">
-                  <Label htmlFor={`name-${item.id}`} className="text-xs text-muted-foreground uppercase font-bold tracking-wider">
+                  <Label className="text-xs text-muted-foreground uppercase font-bold tracking-wider">
                     {t.shopping.productName}
                   </Label>
                   <Input
-                    id={`name-${item.id}`}
                     value={item.name}
                     onChange={(e) => updateItem(item.id, "name", e.target.value)}
                     placeholder={t.shopping.productPlaceholder}
                     className="h-11 text-base"
-                    data-testid={`input-name-${item.id}`}
                   />
                 </div>
 
                 <div className="grid grid-cols-3 gap-3 mb-4">
                   <div className="space-y-1.5">
-                    <Label htmlFor={`price-${item.id}`} className="text-xs text-muted-foreground uppercase font-bold tracking-wider">
+                    <Label className="text-xs text-muted-foreground uppercase font-bold tracking-wider">
                       {t.shopping.price}
                     </Label>
                     <div className="relative">
                       <span className="absolute left-3 top-3 text-muted-foreground text-sm select-none">{currencySymbol}</span>
                       <Input
-                        id={`price-${item.id}`}
-                        type="number"
-                        min="0"
-                        step="0.01"
+                        type="number" min="0" step="0.01"
                         value={item.price}
-                        onChange={(e) =>
-                          updateItem(item.id, "price", e.target.value ? parseFloat(e.target.value) : "")
-                        }
+                        onChange={(e) => updateItem(item.id, "price", e.target.value ? parseFloat(e.target.value) : "")}
                         className="pl-7 h-11 text-base"
                         placeholder="0.00"
-                        data-testid={`input-price-${item.id}`}
                       />
                     </div>
                   </div>
 
                   <div className="space-y-1.5">
-                    <Label htmlFor={`qty-${item.id}`} className="text-xs text-muted-foreground uppercase font-bold tracking-wider">
+                    <Label className="text-xs text-muted-foreground uppercase font-bold tracking-wider">
                       {t.shopping.quantity}
                     </Label>
                     <Input
-                      id={`qty-${item.id}`}
-                      type="number"
-                      min="0"
-                      step="0.1"
+                      type="number" min="0" step="0.1"
                       value={item.quantity}
-                      onChange={(e) =>
-                        updateItem(item.id, "quantity", e.target.value ? parseFloat(e.target.value) : "")
-                      }
-                      placeholder="500"
+                      onChange={(e) => updateItem(item.id, "quantity", e.target.value ? parseFloat(e.target.value) : "")}
+                      placeholder="1"
                       className="h-11 text-base"
-                      data-testid={`input-qty-${item.id}`}
                     />
                   </div>
 
                   <div className="space-y-1.5">
-                    <Label className="text-xs text-muted-foreground uppercase font-bold tracking-wider">{t.shopping.unit}</Label>
-                    <Select
-                      value={item.unit}
-                      onValueChange={(val: Unit) => updateItem(item.id, "unit", val)}
-                    >
-                      <SelectTrigger className="h-11 text-base" data-testid={`select-unit-${item.id}`}>
+                    <Label className="text-xs text-muted-foreground uppercase font-bold tracking-wider">
+                      {t.shopping.unit}
+                    </Label>
+                    <Select value={item.unit} onValueChange={(val: Unit) => updateItem(item.id, "unit", val)}>
+                      <SelectTrigger className="h-11 text-base">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="g">g — gram</SelectItem>
-                        <SelectItem value="kg">kg — kilogram</SelectItem>
-                        <SelectItem value="oz">oz — ounce</SelectItem>
-                        <SelectItem value="lb">lb — pound</SelectItem>
-                        <SelectItem value="ml">ml — millilitre</SelectItem>
-                        <SelectItem value="L">L — litre</SelectItem>
+                        {UNIT_ORDER.map((u) => (
+                          <SelectItem key={u} value={u}>{t.shopping.units[u]}</SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                   </div>
                 </div>
 
+                {/* Unit price result — highlighted for best */}
                 {item.calcInfo ? (
-                  <div className="flex items-center justify-between rounded-lg bg-muted/60 px-4 py-3 border border-border">
-                    <span className="text-xs text-muted-foreground uppercase font-bold tracking-wider">{t.shopping.unitPrice}</span>
-                    <span className="font-mono text-lg font-bold text-foreground">{item.calcInfo.costLabel}</span>
+                  <div className={`flex items-center justify-between rounded-lg px-4 py-3 border transition-all ${
+                    item.isBest
+                      ? "bg-blue-500 text-white border-blue-500 shadow-sm shadow-blue-500/30"
+                      : "bg-muted/60 border-border"
+                  }`}>
+                    <span className={`text-xs font-bold uppercase tracking-wider ${item.isBest ? "text-blue-100" : "text-muted-foreground"}`}>
+                      {t.shopping.unitPrice}
+                    </span>
+                    <span className="font-mono text-lg font-bold">{item.calcInfo.costLabel}</span>
                   </div>
                 ) : (
                   <div className="flex items-center justify-between rounded-lg bg-muted/30 px-4 py-3 border border-dashed border-border opacity-50">
@@ -268,7 +234,6 @@ export default function Shopping() {
                   className="w-full mt-2 text-muted-foreground hover:text-foreground border border-dashed border-border hover:border-border"
                   onClick={() => clearItem(item.id)}
                   disabled={item.name === "" && item.price === "" && item.quantity === ""}
-                  data-testid={`button-clear-${item.id}`}
                 >
                   {t.shopping.clearItem}
                 </Button>
@@ -282,7 +247,6 @@ export default function Shopping() {
         onClick={addItem}
         variant="outline"
         className="w-full border-dashed py-7 text-muted-foreground hover:text-foreground"
-        data-testid="button-add-item"
       >
         <Plus size={18} className="mr-2" />
         {t.shopping.addItem}

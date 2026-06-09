@@ -19,6 +19,7 @@ import { useTranslation, LangToggle } from "@/i18n";
 export function Layout({ children }: { children: React.ReactNode }) {
   const [location] = useLocation();
   const { t } = useTranslation();
+  const [mobileOpen, setMobileOpen] = useState(false);
   const [isDark, setIsDark] = useState(() => {
     if (typeof window !== "undefined") {
       return document.documentElement.classList.contains("dark");
@@ -76,7 +77,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <header className="md:hidden flex items-center p-3 border-b border-border bg-card">
         {/* Left: hamburger + dark mode */}
         <div className="flex items-center gap-1">
-          <Sheet>
+          <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon">
                 <Menu size={20} />
@@ -87,7 +88,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 <Calculator className="text-primary" />
                 <span>CalcPortal</span>
               </div>
-              <NavLinks />
+              <NavLinks onClick={() => setMobileOpen(false)} />
             </SheetContent>
           </Sheet>
           <Button variant="ghost" size="icon" onClick={toggleDark}>
