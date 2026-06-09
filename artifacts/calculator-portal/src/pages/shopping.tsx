@@ -35,7 +35,6 @@ export default function Shopping() {
   const [items, setItems] = useState<Item[]>([
     { id: "1", name: "", price: "", quantity: "", unit: "pcs" },
     { id: "2", name: "", price: "", quantity: "", unit: "pcs" },
-    { id: "3", name: "", price: "", quantity: "", unit: "pcs" },
   ]);
 
   const addItem = () =>
@@ -150,18 +149,6 @@ export default function Shopping() {
                   </div>
                 </div>
 
-                <div className="space-y-1.5 mb-4">
-                  <Label className="text-xs text-muted-foreground uppercase font-bold tracking-wider">
-                    {t.shopping.productName}
-                  </Label>
-                  <Input
-                    value={item.name}
-                    onChange={(e) => updateItem(item.id, "name", e.target.value)}
-                    placeholder={t.shopping.productPlaceholder}
-                    className="h-11 text-base"
-                  />
-                </div>
-
                 <div className="grid grid-cols-3 gap-3 mb-4">
                   <div className="space-y-1.5">
                     <Label className="text-xs text-muted-foreground uppercase font-bold tracking-wider">
@@ -250,14 +237,18 @@ export default function Shopping() {
         if (valid.length < 2 || !best) return null;
         const worst = [...valid].sort((a, b) => b.calcInfo!.costPerUnit - a.calcInfo!.costPerUnit)[0];
         const pct   = ((worst.calcInfo!.costPerUnit - best.calcInfo!.costPerUnit) / worst.calcInfo!.costPerUnit * 100).toFixed(1);
+        const bestLabel  = `${t.shopping.item} ${analyzedItems.indexOf(best) + 1}`;
         return (
           <div className="flex items-start gap-3 rounded-xl border border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-900/20 px-4 py-3 text-sm text-blue-900 dark:text-blue-200">
             <Trophy size={16} className="text-blue-500 mt-0.5 shrink-0" />
             <p>
-              <span className="font-bold">{best.name || `${t.shopping.item} ${analyzedItems.indexOf(best) + 1}`}</span>
-              {" "}{t.shopping.summaryBest} — <span className="font-semibold">{pct}%</span>{" "}
-              {t.shopping.summaryCheaper}{" "}
-              <span className="font-bold">{worst.name || `${t.shopping.item} ${analyzedItems.indexOf(worst) + 1}`}</span>
+              <span className="font-bold">{bestLabel}</span>
+              {" "}{t.shopping.summaryBest}
+              {" — "}{t.shopping.unitPrice}{" "}
+              <span className="font-bold font-mono">{best.calcInfo!.costLabel}</span>
+              {", "}
+              <span className="font-bold">{pct}%</span>{" "}
+              {t.shopping.summaryCheaper}
             </p>
           </div>
         );
