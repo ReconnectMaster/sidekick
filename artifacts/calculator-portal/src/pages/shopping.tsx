@@ -243,6 +243,26 @@ export default function Shopping() {
         ))}
       </div>
 
+      {/* Summary statement */}
+      {(() => {
+        const valid = analyzedItems.filter((i) => i.calcInfo);
+        const best  = valid.find((i) => i.isBest);
+        if (valid.length < 2 || !best) return null;
+        const worst = [...valid].sort((a, b) => b.calcInfo!.costPerUnit - a.calcInfo!.costPerUnit)[0];
+        const pct   = ((worst.calcInfo!.costPerUnit - best.calcInfo!.costPerUnit) / worst.calcInfo!.costPerUnit * 100).toFixed(1);
+        return (
+          <div className="flex items-start gap-3 rounded-xl border border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-900/20 px-4 py-3 text-sm text-blue-900 dark:text-blue-200">
+            <Trophy size={16} className="text-blue-500 mt-0.5 shrink-0" />
+            <p>
+              <span className="font-bold">{best.name || `${t.shopping.item} ${analyzedItems.indexOf(best) + 1}`}</span>
+              {" "}{t.shopping.summaryBest} — <span className="font-semibold">{pct}%</span>{" "}
+              {t.shopping.summaryCheaper}{" "}
+              <span className="font-bold">{worst.name || `${t.shopping.item} ${analyzedItems.indexOf(worst) + 1}`}</span>
+            </p>
+          </div>
+        );
+      })()}
+
       <Button
         onClick={addItem}
         variant="outline"
