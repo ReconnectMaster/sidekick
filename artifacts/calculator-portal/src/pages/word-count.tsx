@@ -11,12 +11,37 @@ export default function WordCount() {
   const [text, setText] = useState("");
 
   const stats = useMemo(() => {
-    const words      = text.trim() === "" ? 0 : text.trim().split(/\s+/).length;
+    if (text.trim() === "") {
+      return { words: 0, chars: 0, charsNoSp: 0, sentences: 0, paragraphs: 0, lines: 0 };
+    }
+
+    // Detect whether the text contains Thai characters
+    const hasThai = /[\u0E00-\u0E7F]/.test(text);
+    const locale  = hasThai ? "th" : undefined;
+
+    // Word count — use Intl.Segmenter for Thai (and all languages)
+    let words = 0;
+    try {
+      const wordSeg = new Intl.Segmenter(locale, { granularity: "word" });
+      words = [...wordSeg.segment(text)].filter((s) => s.isWordLike).length;
+    } catch {
+      words = text.trim().split(/\s+/).length;
+    }
+
+    // Sentence count — Intl.Segmenter handles Thai sentence breaks too
+    let sentences = 0;
+    try {
+      const sentSeg = new Intl.Segmenter(locale, { granularity: "sentence" });
+      sentences = [...sentSeg.segment(text)].filter((s) => s.segment.trim().length > 0).length;
+    } catch {
+      sentences = (text.match(/[.!?。！？\n]+/g) || []).length;
+    }
+
     const chars      = text.length;
     const charsNoSp  = text.replace(/\s/g, "").length;
-    const sentences  = text === "" ? 0 : (text.match(/[.!?]+/g) || []).length;
-    const paragraphs = text.trim() === "" ? 0 : text.split(/\n\n+/).filter((p) => p.trim() !== "").length;
-    const lines      = text === "" ? 0 : text.split("\n").length;
+    const paragraphs = text.split(/\n\n+/).filter((p) => p.trim() !== "").length;
+    const lines      = text.split("\n").length;
+
     return { words, chars, charsNoSp, sentences, paragraphs, lines };
   }, [text]);
 
