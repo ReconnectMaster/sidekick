@@ -7,6 +7,7 @@ import {
   TrendingUp,
   Receipt,
   Bed,
+  Gem,
   FileText,
   Moon,
   Sun,
@@ -44,6 +45,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
     { href: "/profit",     label: t.nav.profit,     icon: TrendingUp  },
     { href: "/vat",        label: t.nav.vat,        icon: Receipt     },
     { href: "/hotel",      label: t.nav.hotel,      icon: Bed         },
+    { href: "/gold",       label: t.nav.gold,       icon: Gem         },
     { href: "/word-count", label: t.nav.wordCount,  icon: FileText    },
   ];
 

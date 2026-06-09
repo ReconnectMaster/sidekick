@@ -6,6 +6,7 @@ import {
   TrendingUp,
   Receipt,
   Bed,
+  Gem,
   FileText,
   ArrowRight,
 } from "lucide-react";
@@ -21,6 +22,7 @@ export default function Home() {
     { href: "/profit",     key: "profit"    as const, icon: TrendingUp,   color: "text-purple-500", bg: "bg-purple-500/10" },
     { href: "/vat",        key: "vat"       as const, icon: Receipt,      color: "text-amber-500",  bg: "bg-amber-500/10"  },
     { href: "/hotel",      key: "hotel"     as const, icon: Bed,          color: "text-rose-500",   bg: "bg-rose-500/10"   },
+    { href: "/gold",       key: "gold"      as const, icon: Gem,          color: "text-yellow-500", bg: "bg-yellow-500/10" },
     { href: "/word-count", key: "wordCount" as const, icon: FileText,     color: "text-indigo-500", bg: "bg-indigo-500/10" },
   ];
 
